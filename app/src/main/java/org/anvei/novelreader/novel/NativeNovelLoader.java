@@ -1,4 +1,4 @@
-package org.anvei.novelreader.utils.novel;
+package org.anvei.novelreader.novel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,7 +27,7 @@ public class NativeNovelLoader implements NovelLoader {
 
     private NovelInfoResolver novelInfoResolver;
 
-    private ChapterSpliter chapterSpliter;
+    private ChapterSplitter chapterSplitter;
 
     public NativeNovelLoader(@NonNull String path) {
         this(new File(path));
@@ -51,12 +51,12 @@ public class NativeNovelLoader implements NovelLoader {
     public @Nullable Novel load() {
         Novel novel = null;
         try {
-            if (chapterSpliter == null) {
-                chapterSpliter = new DefaultChapterSpliter(new FileInputStream(file));
+            if (chapterSplitter == null) {
+                chapterSplitter = new DefaultChapterSplitter(new FileInputStream(file));
             }
             novel = novelInfoResolver.resolve(file.getPath());
-            while (chapterSpliter.hasMoreElements()) {
-                novel.addChapter(chapterSpliter.nextElement());
+            while (chapterSplitter.hasMoreElements()) {
+                novel.addChapter(chapterSplitter.nextElement());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,14 +81,14 @@ public class NativeNovelLoader implements NovelLoader {
         this.novelInfoResolver = novelInfoResolver;
     }
 
-    public void setChapterSpliter(ChapterSpliter chapterSpliter) {
-        this.chapterSpliter = chapterSpliter;
+    public void setChapterSplitter(ChapterSplitter chapterSplitter) {
+        this.chapterSplitter = chapterSplitter;
     }
 
     /**
      * 本地小说章节分割器的默认实现
      */
-    public static class DefaultChapterSpliter implements ChapterSpliter {
+    public static class DefaultChapterSplitter implements ChapterSplitter {
 
         protected final InputStream in;
 
@@ -96,7 +96,7 @@ public class NativeNovelLoader implements NovelLoader {
 
         protected int index;          // 指向当前nextElement()返回的元素
 
-        public DefaultChapterSpliter(@NonNull InputStream in) throws IOException {
+        public DefaultChapterSplitter(@NonNull InputStream in) throws IOException {
             this.in = in;
             parse();
             index = 0;
@@ -187,15 +187,15 @@ public class NativeNovelLoader implements NovelLoader {
             String fileName = path.substring(0, path.lastIndexOf('.'));
             int index = fileName.lastIndexOf('-');
             String novelName;
-            String anthor;
+            String author;
             if (index != -1) {
                 novelName = fileName.substring(0, index);    // 由文件名解析小说名和作者
-                anthor = fileName.substring(index + 1);
+                author = fileName.substring(index + 1);
             } else {
                 novelName = fileName;
-                anthor = "";
+                author = "";
             }
-            return new Novel(novelName, anthor);
+            return new Novel(novelName, author);
         }
 
     }

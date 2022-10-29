@@ -1,16 +1,16 @@
 package org.anvei.novelreader
 
 import android.annotation.SuppressLint
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import org.anvei.novelreader.utils.novel.NativeNovelLoader
+import androidx.appcompat.app.AppCompatActivity
+import org.anvei.novelreader.utils.FileUtils
+import org.anvei.novelreader.novel.NativeNovelLoader
 import java.io.File
-import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,30 +18,12 @@ class MainActivity : AppCompatActivity() {
     private val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) {
         if (it != null) {
             val file: File = File(externalCacheDir, "temp.txt")
-            cacheNovel(file, it)
+            FileUtils.copy(file, contentResolver.openInputStream(it))
             val novel = NativeNovelLoader(file)
                 .load()
             findViewById<TextView>(R.id.text).text = novel?.getChapter(1)?.name + "\n" +
                     novel?.getChapter(1)?.content
         }
-    }
-
-    // 缓存小说
-    private fun cacheNovel(file: File, uri: Uri) {
-        if (file.exists()) {
-            file.delete()
-        }
-        val inputStream = contentResolver.openInputStream(uri)
-        val outputStream = FileOutputStream(file)
-
-        file.createNewFile()
-        val b: ByteArray = ByteArray(1024)
-        while (inputStream?.read(b) != -1) {
-            outputStream.write(b)
-        }
-
-        inputStream.close()
-        outputStream.close()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,5 +33,19 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.select).setOnClickListener {
             launcher.launch("*/*")
         }
+
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowTitleEnabled(false)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                startActivity(Intent(this, MainActivity2::class.java))
+            }
+        }
+        return true
     }
 }

@@ -10,11 +10,15 @@ public class Chapter {
 
     private final String name;              // 章节名
 
-    private final String content;                 // 章节内容
+    private String content = null;                 // 章节内容
 
     private Date updateTime;                // 更新时间
 
     private int wordCount = 0;
+
+    public Chapter(@NonNull String name) {
+        this.name = name;
+    }
 
     public Chapter(@NonNull String name, @NonNull String content) {
         this.name = name;
@@ -26,8 +30,13 @@ public class Chapter {
         return name;
     }
 
-    public @NonNull String getContent() {
+    public @Nullable String getContent() {
         return content;
+    }
+
+    public void setContent(@NonNull String content) {
+        this.content = content;
+        wordCount = content.length();
     }
 
     public @Nullable Date getUpdateTime() {

@@ -1,4 +1,4 @@
-package org.anvei.novelreader.utils.novel;
+package org.anvei.novelreader.novel;
 
 import org.anvei.novelreader.model.Novel;
 
