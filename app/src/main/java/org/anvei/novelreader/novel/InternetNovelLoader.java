@@ -6,15 +6,7 @@ import org.anvei.novelreader.model.NovelInfo;
 import java.util.List;
 
 /**
- * 网络小说加载器的抽象实现<br/><br/>
- *
- * 支持小说搜索功能：
- *      返回Novel对象列表，该列表中的小说都已经完成了对小说基本信息的加载 <br/><br/>
- *
- * 支持部分加载Novel对象，加载顺序如下:<br/>
- *      <li>小说基本信息</li>
- *      <li>小说目录</li>
- *      <li>小说章节内容</li>
+ * Abstract implementation of the web novel loader<br/><br/>
  */
 public abstract class InternetNovelLoader implements NovelLoader {
 

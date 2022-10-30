@@ -1,6 +1,6 @@
 package org.anvei.novelreader.novel;
 
-// 顶层加载器抽象
+// Top-level loader abstraction
 public interface Loader<E> {
 
     E load();

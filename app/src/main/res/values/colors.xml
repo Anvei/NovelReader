@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="light_coffee">#A58D5E</color>
+
+    <color name="splitter">#E64A19</color>
 </resources>

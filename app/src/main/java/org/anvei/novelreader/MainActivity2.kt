@@ -1,6 +1,6 @@
 package org.anvei.novelreader
 
-import android.os.Build
+import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
@@ -9,7 +9,9 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import org.anvei.novelreader.novel.SfacgNovelLoader
+import org.anvei.novelreader.activity.ReadPageActivity
+import org.anvei.novelreader.model.NovelInfo
+import org.anvei.novelreader.novel.SfacgParser
 
 
 class MainActivity2 : AppCompatActivity() {
@@ -19,6 +21,10 @@ class MainActivity2 : AppCompatActivity() {
     private lateinit var editText: EditText
 
     private lateinit var textView: TextView
+
+    private lateinit var selectFirst: Button
+
+    private lateinit var novelInfoList: List<NovelInfo>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,14 +37,17 @@ class MainActivity2 : AppCompatActivity() {
         search = findViewById(R.id.search)
         editText = findViewById(R.id.editText)
         textView = findViewById(R.id.text2)
+        selectFirst = findViewById(R.id.selectFirst)
 
         search.setOnClickListener {
             if (editText.text.isNotEmpty()) {
                 try {
-                    val novelInfoList = SfacgNovelLoader.search(editText.text.toString())
+                    novelInfoList = SfacgParser().search(editText.text.toString())
                     val stringBuilder = StringBuilder()
                     novelInfoList.forEach{
-                        stringBuilder.append(it.novel.name).append(" 作者: ").append(it.novel.author).append("\n")
+                        stringBuilder.append("《").append(it.novel.name).append("》").append("\n")
+                            .append(" 作者: ").append(it.novel.author).append("\n")
+                            .append(" 简介: ").append("\n    ").append(it.introduction).append("\n\n")
                     }
                     textView.text = stringBuilder.toString()
                 } catch (ex: Exception) {
@@ -47,5 +56,16 @@ class MainActivity2 : AppCompatActivity() {
                 }
             }
         }
+
+        selectFirst.setOnClickListener {
+            if (novelInfoList != null) {
+                val novelInfo = novelInfoList[0]
+                val intent = Intent(this, ReadPageActivity::class.java)
+                intent.putExtra("novelUrl", novelInfo.url)
+                intent.putExtra("novelName", novelInfo.novel.name)
+                startActivity(intent)
+            }
+        }
+
     }
 }

@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Novel {
@@ -20,6 +21,8 @@ public class Novel {
     private Status novelStatus = Status.UNKNOWN;         // 小说连载状态，默认为未知状态
 
     private int wordCount = 0;         // 小说字数
+
+    private Date lastUpdate;
 
     public Novel(@NonNull String name, @NonNull String author) {
         this.name = name;
@@ -70,5 +73,13 @@ public class Novel {
 
     public int getChapterCount() {
         return chapterCount;
+    }
+
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 }

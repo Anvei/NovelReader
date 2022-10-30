@@ -24,6 +24,11 @@
 
     </LinearLayout>
 
+    <Button android:id="@+id/selectFirst"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="选择第一本" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -25,7 +25,7 @@ public class NativeNovelLoader implements NovelLoader {
 
     private File file;
 
-    private NovelInfoResolver novelInfoResolver;
+    private NativeNovelInfoResolver novelInfoResolver;
 
     private ChapterSplitter chapterSplitter;
 
@@ -38,7 +38,7 @@ public class NativeNovelLoader implements NovelLoader {
         this.novelInfoResolver = new DefaultNovelInfoResolver();
     }
 
-    public NativeNovelLoader(@NonNull File file, @NonNull NovelInfoResolver novelInfoResolver) {
+    public NativeNovelLoader(@NonNull File file, @NonNull NativeNovelInfoResolver novelInfoResolver) {
         this.file = file;
         this.novelInfoResolver = novelInfoResolver;
     }
@@ -77,7 +77,7 @@ public class NativeNovelLoader implements NovelLoader {
     /**
      * 设置小说信息（小说名称，小说作者）解析器
      */
-    public void setNovelInfoResolver(NovelInfoResolver novelInfoResolver) {
+    public void setNovelInfoResolver(NativeNovelInfoResolver novelInfoResolver) {
         this.novelInfoResolver = novelInfoResolver;
     }
 
@@ -179,7 +179,7 @@ public class NativeNovelLoader implements NovelLoader {
     /**
      * 本地小说信息解析器的默认实现
      */
-    public static class DefaultNovelInfoResolver implements NovelInfoResolver {
+    public static class DefaultNovelInfoResolver implements NativeNovelInfoResolver {
 
         @Override
         public Novel resolve(String path) {
