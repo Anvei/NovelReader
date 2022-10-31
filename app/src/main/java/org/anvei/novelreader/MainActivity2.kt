@@ -60,8 +60,8 @@ class MainActivity2 : BaseActivity() {
         selectFirst.setOnClickListener {
             val novelInfo = novelInfoList[0]
             val intent = Intent(this, ReadPageActivity::class.java)
-            intent.putExtra(ANVEI_NOVEL_URL, novelInfo.url)
-            intent.putExtra(ANVEI_NOVEL_NAME, novelInfo.novel.name)
+            intent.putExtra(EXTRA_NOVEL_URL, novelInfo.url)
+            intent.putExtra(EXTRA_NOVEL_NAME, novelInfo.novel.name)
             startActivity(intent)
         }
 

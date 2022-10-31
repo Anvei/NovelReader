@@ -41,7 +41,7 @@ class ReadPageActivity : BaseActivity() {
 
         drawerLayout.setScrimColor(Color.TRANSPARENT)
 
-        val novelUrl = intent.getStringExtra(ANVEI_NOVEL_URL)
+        val novelUrl = intent.getStringExtra(EXTRA_NOVEL_URL)
 
         val chapterInfoList = parser.loadNovel(novelUrl)
 
@@ -51,7 +51,7 @@ class ReadPageActivity : BaseActivity() {
         chapterList.layoutManager = LinearLayoutManager(this)
 
         headView.findViewById<TextView>(R.id.chapterPage_novelName).text =
-            intent.getStringExtra(ANVEI_NOVEL_NAME)
+            intent.getStringExtra(EXTRA_NOVEL_NAME)
 
         findViewById<FloatingActionButton>(R.id.floatingButton).setOnClickListener{
             drawerLayout.openDrawer(GravityCompat.START)
