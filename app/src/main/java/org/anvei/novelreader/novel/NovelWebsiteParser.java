@@ -1,16 +1,29 @@
 package org.anvei.novelreader.novel;
 
-import org.anvei.novelreader.model.NovelInfo;
+public abstract class NovelWebsiteParser implements NovelWebsiteParsable {
 
-import java.io.IOException;
-import java.util.List;
+    public static String REQUEST_HEAD_VALUE = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36";
 
-public interface NovelWebsiteParser {
+    public static String REQUEST_HEAD_KEY = "User-Agent";
 
-    List<NovelInfo> search(String keyWord) throws IOException;
+    protected int timeOut = 10000;
 
-    List<NovelInfo> searchByAuthor(String author);
+    protected NovelSearchFilter filter;
 
-    List<NovelInfo> searchByNovelName(String author);
+    protected NovelWebsiteParser() {
+    }
 
+    protected NovelWebsiteParser(NovelSearchFilter filter) {
+        this.filter = filter;
+    }
+
+    public NovelWebsiteParser setTimeOut(int timeOut) {
+        this.timeOut = timeOut;
+        return this;
+    }
+
+    public NovelWebsiteParser setFilter(NovelSearchFilter filter) {
+        this.filter = filter;
+        return this;
+    }
 }

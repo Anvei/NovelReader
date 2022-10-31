@@ -3,7 +3,6 @@ package org.anvei.novelreader.activity
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,15 +13,13 @@ import org.anvei.novelreader.R
 import org.anvei.novelreader.adapter.ChapterItemAdapter
 import org.anvei.novelreader.novel.SfacgParser
 
-class ReadPageActivity : AppCompatActivity() {
+class ReadPageActivity : BaseActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
 
     private lateinit var chapterContent: TextView
 
     private lateinit var chapterList: RecyclerView
-
-    // private lateinit var  toolbar: Toolbar
 
     private val parser = SfacgParser()
 
@@ -44,16 +41,17 @@ class ReadPageActivity : AppCompatActivity() {
 
         drawerLayout.setScrimColor(Color.TRANSPARENT)
 
-        val novelUrl = intent.getStringExtra("novelUrl")
+        val novelUrl = intent.getStringExtra(ANVEI_NOVEL_URL)
 
-        val chapterInfoList = parser.loadChapterList(novelUrl)
+        val chapterInfoList = parser.loadNovel(novelUrl)
 
         chapterContent.text = parser.loadChapter(chapterInfoList[0]).content
 
         chapterList.adapter = ChapterItemAdapter(chapterInfoList, this)
         chapterList.layoutManager = LinearLayoutManager(this)
 
-        headView.findViewById<TextView>(R.id.chapterPage_novelName).text = intent.getStringExtra("novelName")
+        headView.findViewById<TextView>(R.id.chapterPage_novelName).text =
+            intent.getStringExtra(ANVEI_NOVEL_NAME)
 
         findViewById<FloatingActionButton>(R.id.floatingButton).setOnClickListener{
             drawerLayout.openDrawer(GravityCompat.START)

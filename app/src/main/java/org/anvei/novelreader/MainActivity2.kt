@@ -8,13 +8,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import org.anvei.novelreader.activity.BaseActivity
 import org.anvei.novelreader.activity.ReadPageActivity
 import org.anvei.novelreader.model.NovelInfo
 import org.anvei.novelreader.novel.SfacgParser
 
 
-class MainActivity2 : AppCompatActivity() {
+class MainActivity2 : BaseActivity() {
 
     private lateinit var search: Button
 
@@ -58,13 +58,11 @@ class MainActivity2 : AppCompatActivity() {
         }
 
         selectFirst.setOnClickListener {
-            if (novelInfoList != null) {
-                val novelInfo = novelInfoList[0]
-                val intent = Intent(this, ReadPageActivity::class.java)
-                intent.putExtra("novelUrl", novelInfo.url)
-                intent.putExtra("novelName", novelInfo.novel.name)
-                startActivity(intent)
-            }
+            val novelInfo = novelInfoList[0]
+            val intent = Intent(this, ReadPageActivity::class.java)
+            intent.putExtra(ANVEI_NOVEL_URL, novelInfo.url)
+            intent.putExtra(ANVEI_NOVEL_NAME, novelInfo.novel.name)
+            startActivity(intent)
         }
 
     }

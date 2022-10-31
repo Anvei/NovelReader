@@ -7,12 +7,12 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import org.anvei.novelreader.utils.FileUtils
+import org.anvei.novelreader.activity.BaseActivity
 import org.anvei.novelreader.novel.NativeNovelLoader
+import org.anvei.novelreader.utils.FileUtils
 import java.io.File
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) {
