@@ -8,6 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="main_icon_active">#5AC2EE</color>
+    <color name="main_icon_fill">#FFFFFF</color>
+    <color name="main_icon_stroke">#000000</color>
+
     <color name="light_coffee">#A58D5E</color>
 
     <color name="splitter">#E64A19</color>

@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.R
 import org.anvei.novelreader.model.ChapterInfo
 import org.anvei.novelreader.novel.BiqumuParser
-import org.anvei.novelreader.novel.SfacgParser
 
 class ChapterItemAdapter(private val list: List<ChapterInfo>, private val activity: Activity)
     : RecyclerView.Adapter<ChapterItemAdapter.Holder>() {

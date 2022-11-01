@@ -1,26 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/select"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/mainViewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="选择文件" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/mainRadio" />
 
-    <ScrollView
+    <RadioGroup
+        android:id="@+id/mainRadio"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="55dp"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/mainBookShelf"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Hello world!"
-            android:textSize="15sp" />
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:checked="true"
+            android:drawableTop="@drawable/ic_main_book_shelf_radio"
+            android:text="书架"
+            android:textColor="@color/main_icon_active"/>
 
-    </ScrollView>
+        <RadioButton
+            android:id="@+id/mainSuggest"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:checked="false"
+            android:drawableTop="@drawable/ic_main_suggest_radio"
+            android:text="推荐"
+            android:textColor="@color/main_icon_stroke"/>
 
-</LinearLayout>
+        <RadioButton
+            android:id="@+id/mainSetting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:checked="false"
+            android:drawableTop="@drawable/ic_main_setting_radio"
+            android:text="设置"
+            android:textColor="@color/main_icon_stroke"/>
+
+    </RadioGroup>
+
+</RelativeLayout>

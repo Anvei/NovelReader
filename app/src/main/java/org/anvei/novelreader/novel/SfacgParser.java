@@ -139,7 +139,7 @@ public class SfacgParser extends NovelWebsiteParser {
                 String chapterUrl = homeUrl.substring(0, homeUrl.length() - 1) + elements.get(i).attr("href");
                 String title = elements.get(i).attr("title");
                 ChapterInfo chapterInfo = new ChapterInfo(new Chapter(title), index);
-                chapterInfo.addUrl(chapterUrl);
+                chapterInfo.setUrl(chapterUrl);
                 chapterInfoList.add(chapterInfo);
             }
         } catch (IOException e) {
@@ -152,15 +152,12 @@ public class SfacgParser extends NovelWebsiteParser {
     public Chapter loadChapter(ChapterInfo chapterInfo) {
         StringBuilder content = new StringBuilder();
         try {
-            for (int i = 0; i < chapterInfo.getUrlCount(); i++) {
-                String url = chapterInfo.getUrl(i);
-                Document document = getDocument(url);
-                Elements paras = document.select(SELECT_CHAPTER_CONTENT);
-                for (Element para : paras) {
-                    content.append("    ")
-                            .append(para.text().trim())
-                            .append("\n\n");
-                }
+            Document document = getDocument(chapterInfo.getUrl());
+            Elements paras = document.select(SELECT_CHAPTER_CONTENT);
+            for (Element para : paras) {
+                content.append("    ")
+                        .append(para.text().trim())
+                        .append("\n\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
