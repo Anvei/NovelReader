@@ -18,11 +18,8 @@ import java.util.List;
 
 public class SfacgParser extends NovelWebsiteParser {
 
-    public SfacgParser() {
-    }
-
     // The home page address of the SFACG website
-    private static final String baseUrl = "https://book.sfacg.com/";
+    private static final String homeUrl = "https://book.sfacg.com/";
 
     //  prefix of the query API
     private static final String searchApiPrefix = "http://s.sfacg.com/?Key=";
@@ -38,6 +35,9 @@ public class SfacgParser extends NovelWebsiteParser {
 
     //  css selector string for getting chapter content
     private static final String SELECT_CHAPTER_CONTENT = "#ChapterBody > p";
+
+    public SfacgParser() {
+    }
 
     /**
      * Escape the keyword string into the hexadecimal string format required for the query URL
@@ -57,7 +57,7 @@ public class SfacgParser extends NovelWebsiteParser {
     private Document getDocument(@NonNull String url) throws IOException {
         return Jsoup.connect(url)
                 .header(REQUEST_HEAD_KEY, REQUEST_HEAD_VALUE)
-                .timeout(timeOut)
+                .timeout(getTimeOut())
                 .ignoreContentType(true)
                 .get();
     }
@@ -109,7 +109,7 @@ public class SfacgParser extends NovelWebsiteParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return filter == null ? novels : filter.filter(novels);
+        return getFilter() == null ? novels : getFilter().filter(novels);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class SfacgParser extends NovelWebsiteParser {
             Elements elements = document.select(SELECT_CHAPTER_LIST);
             for (int i = 0; i < elements.size(); i++) {
                 int index = i + 1;
-                String chapterUrl = baseUrl.substring(0, baseUrl.length() - 1) + elements.get(i).attr("href");
+                String chapterUrl = homeUrl.substring(0, homeUrl.length() - 1) + elements.get(i).attr("href");
                 String title = elements.get(i).attr("title");
                 ChapterInfo chapterInfo = new ChapterInfo(new Chapter(title), index);
                 chapterInfo.addUrl(chapterUrl);

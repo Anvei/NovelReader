@@ -9,7 +9,8 @@ import java.io.File;
 public final class FileDuplicateUtils {
 
     public static enum WebsiteIdentifier {
-        SFACG
+        SFACG,
+        BIQUMU
     }
 
     /**

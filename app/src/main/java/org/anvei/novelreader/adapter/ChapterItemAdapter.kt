@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.R
 import org.anvei.novelreader.model.ChapterInfo
+import org.anvei.novelreader.novel.BiqumuParser
 import org.anvei.novelreader.novel.SfacgParser
 
 class ChapterItemAdapter(private val list: List<ChapterInfo>, private val activity: Activity)
@@ -27,7 +28,7 @@ class ChapterItemAdapter(private val list: List<ChapterInfo>, private val activi
         val chapterInfo = list[position]
         holder.textView.text = chapterInfo.chapter.name
         holder.textView.setOnClickListener {
-            val parser = SfacgParser()
+            val parser = BiqumuParser()
             val chapter = parser.loadChapter(chapterInfo)
             activity.findViewById<TextView>(R.id.chapterContent).text = chapter.content
         }

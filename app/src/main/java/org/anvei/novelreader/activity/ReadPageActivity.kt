@@ -11,6 +11,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import org.anvei.novelreader.R
 import org.anvei.novelreader.adapter.ChapterItemAdapter
+import org.anvei.novelreader.novel.BiqumuParser
 import org.anvei.novelreader.novel.SfacgParser
 
 class ReadPageActivity : BaseActivity() {
@@ -21,7 +22,7 @@ class ReadPageActivity : BaseActivity() {
 
     private lateinit var chapterList: RecyclerView
 
-    private val parser = SfacgParser()
+    private val parser = BiqumuParser()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

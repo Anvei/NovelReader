@@ -11,6 +11,7 @@ import android.widget.Toast
 import org.anvei.novelreader.activity.BaseActivity
 import org.anvei.novelreader.activity.ReadPageActivity
 import org.anvei.novelreader.model.NovelInfo
+import org.anvei.novelreader.novel.BiqumuParser
 import org.anvei.novelreader.novel.SfacgParser
 
 
@@ -42,7 +43,7 @@ class MainActivity2 : BaseActivity() {
         search.setOnClickListener {
             if (editText.text.isNotEmpty()) {
                 try {
-                    novelInfoList = SfacgParser().search(editText.text.toString())
+                    novelInfoList = BiqumuParser().search(editText.text.toString())
                     val stringBuilder = StringBuilder()
                     novelInfoList.forEach{
                         stringBuilder.append("《").append(it.novel.name).append("》").append("\n")
