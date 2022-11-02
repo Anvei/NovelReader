@@ -1,10 +1,15 @@
 package org.anvei.novelreader.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ImageSpan
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import org.anvei.novelreader.R
 import org.anvei.novelreader.adapter.MainPagerAdapter
@@ -19,6 +24,12 @@ class MainActivity : BaseActivity() {
     private lateinit var suggestTab: RadioButton
     private lateinit var settingTab: RadioButton
 
+    private lateinit var suggestSearch: TextView
+
+    private lateinit var mainBookShelf: View
+    private lateinit var mainSuggest: View
+    private lateinit var mainSetting: View
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -29,11 +40,15 @@ class MainActivity : BaseActivity() {
 
     private fun initWidget() {
         viewPager = findViewById(R.id.mainViewPager)
-        val mainViews: List<View> = listOf(layoutInflater.inflate(R.layout.main_book_shelf, null),
-            layoutInflater.inflate(R.layout.main_suggest, null),
-            layoutInflater.inflate(R.layout.main_setting, null))
+        mainBookShelf = layoutInflater.inflate(R.layout.main_book_shelf, null)
+        mainSuggest = layoutInflater.inflate(R.layout.main_suggest, null)
+        mainSetting = layoutInflater.inflate(R.layout.main_setting, null)
+
+        val mainViews: List<View> = listOf(mainBookShelf, mainSuggest, mainSetting)
+
         viewPager.adapter = MainPagerAdapter(mainViews)
 
+        radioGroup = findViewById(R.id.mainRadio)
         bookShelfTab = findViewById(R.id.mainBookShelf)
         suggestTab = findViewById(R.id.mainSuggest)
         settingTab = findViewById(R.id.mainSetting)
@@ -59,8 +74,8 @@ class MainActivity : BaseActivity() {
                     }
                     2 -> {
                         bookShelfTab.isChecked = false
-                        suggestTab.isChecked = true
-                        settingTab.isChecked = false
+                        suggestTab.isChecked = false
+                        settingTab.isChecked = true
                     }
                 }
             }
@@ -75,6 +90,19 @@ class MainActivity : BaseActivity() {
                 R.id.mainSuggest -> viewPager.currentItem = 1
                 R.id.mainSetting -> viewPager.currentItem = 2
             }
+        }
+
+        suggestSearch = mainSuggest.findViewById(R.id.mainSuggestSearch)
+        val spannableString = SpannableStringBuilder()
+        spannableString.append("搜索 关键字")
+        val imageSpan = ImageSpan(this, R.drawable.search)
+        //将'搜索'用图片替代
+        spannableString.setSpan(imageSpan, 0, 2, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
+        suggestSearch.text = spannableString
+
+        suggestSearch.setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
         }
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

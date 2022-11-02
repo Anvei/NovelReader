@@ -27,7 +27,7 @@
             android:checked="true"
             android:drawableTop="@drawable/ic_main_book_shelf_radio"
             android:text="书架"
-            android:textColor="@color/main_icon_active"/>
+            android:textColor="@color/main_icon_stroke"/>
 
         <RadioButton
             android:id="@+id/mainSuggest"

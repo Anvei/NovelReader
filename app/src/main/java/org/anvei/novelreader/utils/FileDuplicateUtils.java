@@ -1,17 +1,12 @@
 package org.anvei.novelreader.utils;
 
-import java.io.File;
+import org.anvei.novelreader.model.WebsiteIdentifier;
 
 /**
  * 缓存文件生成规则:<br/>
  * 网站标识符数字形式 + 网站标识符首字母 + 作者名加密 + NovelUID
  */
 public final class FileDuplicateUtils {
-
-    public static enum WebsiteIdentifier {
-        SFACG,
-        BIQUMU
-    }
 
     /**
      * 将网站标识符转成数字加一个首字母

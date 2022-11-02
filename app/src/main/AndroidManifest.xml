@@ -20,8 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NovelReader"
         tools:targetApi="31">
+        <activity android:name=".activity.NovelHomeActivity"
+            android:exported="false"/>
         <activity
-            android:name=".NovelListActivity"
+            android:name=".activity.NovelListActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SearchActivity"

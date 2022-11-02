@@ -1,10 +1,14 @@
 package org.anvei.novelreader.model;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
 
 public class NovelInfo {
 
     private final Novel novel;
+
+    private final WebsiteIdentifier identifier;
 
     private String introduction;        // 简介
 
@@ -14,8 +18,9 @@ public class NovelInfo {
 
     private File cachePic;              // 缓存的小说封面
 
-    public NovelInfo(Novel novel) {
+    public NovelInfo(@NonNull Novel novel, @NonNull WebsiteIdentifier identifier) {
         this.novel = novel;
+        this.identifier = identifier;
     }
 
     public Novel getNovel() {
