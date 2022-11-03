@@ -1,4 +1,4 @@
-package org.anvei.novelreader.novel;
+package org.anvei.novelreader.novel.parser;
 
 import androidx.annotation.NonNull;
 
@@ -7,6 +7,7 @@ import org.anvei.novelreader.model.ChapterInfo;
 import org.anvei.novelreader.model.Novel;
 import org.anvei.novelreader.model.NovelInfo;
 import org.anvei.novelreader.model.WebsiteIdentifier;
+import org.anvei.novelreader.novel.WebsiteNovelParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SfacgParser extends NovelWebsiteParser {
+public class SfacgParser extends WebsiteNovelParser {
 
     public static final WebsiteIdentifier identifier = WebsiteIdentifier.SFACG;
 
@@ -54,16 +55,6 @@ public class SfacgParser extends NovelWebsiteParser {
         return stringBuilder.toString();
     }
 
-    /**
-     * get a Document object for the url
-     */
-    private Document getDocument(@NonNull String url) throws IOException {
-        return Jsoup.connect(url)
-                .header(REQUEST_HEAD_KEY, REQUEST_HEAD_VALUE)
-                .timeout(getTimeOut())
-                .ignoreContentType(true)
-                .get();
-    }
     /**
      * Android system requires that network requests need to be executed in child threads.
      */
@@ -158,9 +149,9 @@ public class SfacgParser extends NovelWebsiteParser {
             Document document = getDocument(chapterInfo.getUrl());
             Elements paras = document.select(SELECT_CHAPTER_CONTENT);
             for (Element para : paras) {
-                content.append("    ")
+                content.append(PARA_PREFIX)
                         .append(para.text().trim())
-                        .append("\n\n");
+                        .append(PARA_SUFFIX);
             }
         } catch (IOException e) {
             e.printStackTrace();

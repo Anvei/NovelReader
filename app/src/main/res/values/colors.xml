@@ -12,7 +12,12 @@
     <color name="main_icon_fill">#FFFFFF</color>
     <color name="main_icon_stroke">#000000</color>
 
+    <color name="text_color">#000000</color>
+    <color name="chapter_list_item_clicked_text_color">#FF4E4E</color>
+    
+    <color name="translucent">#00000000</color>
+
     <color name="light_coffee">#A58D5E</color>
 
-    <color name="splitter">#E64A19</color>
+    <color name="splitter">#F0F0F0</color>
 </resources>

@@ -8,7 +8,7 @@ public class NovelInfo {
 
     private final Novel novel;
 
-    private final WebsiteIdentifier identifier;
+    public final WebsiteIdentifier identifier;
 
     private String introduction;        // 简介
 

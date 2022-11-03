@@ -1,4 +1,4 @@
-package org.anvei.novelreader.novel;
+package org.anvei.novelreader.novel.parser;
 
 import androidx.annotation.NonNull;
 
@@ -7,6 +7,7 @@ import org.anvei.novelreader.model.ChapterInfo;
 import org.anvei.novelreader.model.Novel;
 import org.anvei.novelreader.model.NovelInfo;
 import org.anvei.novelreader.model.WebsiteIdentifier;
+import org.anvei.novelreader.novel.WebsiteNovelParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BiqumuParser extends NovelWebsiteParser {
+public class BiqumuParser extends WebsiteNovelParser {
 
     public static final WebsiteIdentifier identifier = WebsiteIdentifier.BIQUMU;
 
@@ -41,16 +42,12 @@ public class BiqumuParser extends NovelWebsiteParser {
 
     private Document getSearchResult(@NonNull String keyWord) throws IOException {
         return Jsoup.connect(searchApi)
+                .header(REQUEST_HEAD_KEY, REQUEST_HEAD_VALUE)
                 .data(searchKey, keyWord)
                 .timeout(getTimeOut())
                 .post();
     }
 
-    private Document getDocument(@NonNull String url) throws IOException {
-        return Jsoup.connect(url)
-                .timeout(getTimeOut())
-                .get();
-    }
     /**
      * 只解析获得了小说名称、作者、链接
      */
@@ -167,9 +164,9 @@ public class BiqumuParser extends NovelWebsiteParser {
                     i = 1;
                 }
                 while (i < paras.size()) {
-                    content.append("    ")
+                    content.append(PARA_PREFIX)
                             .append(paras.get(i).text().trim())
-                            .append("\n\n");
+                            .append(PARA_SUFFIX);
                     i++;
                 }
             }

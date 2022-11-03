@@ -3,21 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/readPageDrawer">
+    android:id="@+id/readPageDrawer"
+    android:fitsSystemWindows="false">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ScrollView
+            android:id="@+id/scrollContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/chapterContent"
+                android:id="@+id/readContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hello world!" />
+                android:layout_marginHorizontal="8dp"
+                android:textSize="16sp"
+                android:textColor="@color/text_color"
+                android:lineSpacingMultiplier="1.5"/>
 
         </ScrollView>
 
@@ -32,8 +37,8 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation"
-        android:layout_width="240dp"
+        android:id="@+id/readNavigation"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/navigation_head" />

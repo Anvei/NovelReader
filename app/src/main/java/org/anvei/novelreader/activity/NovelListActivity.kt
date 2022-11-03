@@ -1,17 +1,20 @@
 package org.anvei.novelreader.activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.R
 import org.anvei.novelreader.adapter.SearchItemAdapter
 import org.anvei.novelreader.model.NovelInfo
-import org.anvei.novelreader.novel.BiqumuParser
-import org.anvei.novelreader.novel.SfacgParser
+import org.anvei.novelreader.novel.NovelParserFactory
+import org.anvei.novelreader.novel.WebsiteNovelParser
 
 class NovelListActivity : BaseActivity() {
 
     private lateinit var novelRecycler: RecyclerView
+
+    private lateinit var novelParsers: List<WebsiteNovelParser>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +23,7 @@ class NovelListActivity : BaseActivity() {
         novelRecycler = findViewById(R.id.searchResultList)
 
         val keyword = intent.getStringExtra(EXTRA_SEARCH_KEYWORD)
-        val sfacgParser = SfacgParser()
-        val biqumuParser = BiqumuParser()
+        novelParsers = NovelParserFactory.getWebsiteNovelParsers()
 
         val novelList = ArrayList<NovelInfo>()
         val adapter = SearchItemAdapter(novelList, this)
@@ -30,17 +32,14 @@ class NovelListActivity : BaseActivity() {
         novelRecycler.layoutManager = LinearLayoutManager(this)
 
         Thread {
-            val sfacgList = sfacgParser.search(keyword)
-            novelList.addAll(sfacgList)
-            runOnUiThread {
-                adapter.notifyItemRangeChanged(0, sfacgList.size)
+            novelParsers.forEach {
+                val tempList = it.search(keyword)
+                val start = novelList.size
+                novelList.addAll(tempList)
+                runOnUiThread {
+                    adapter.notifyItemRangeChanged(start, novelList.size)
+                }
             }
-            val biqumuList = biqumuParser.search(keyword)
-            novelList.addAll(biqumuList)
-            runOnUiThread {
-                adapter.notifyItemRangeChanged(sfacgList.size, sfacgList.size + biqumuList.size)
-            }
-            Thread.sleep(20000)
         }.start()
     }
 }

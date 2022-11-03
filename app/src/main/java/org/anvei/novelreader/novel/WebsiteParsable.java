@@ -6,7 +6,7 @@ import org.anvei.novelreader.model.NovelInfo;
 
 import java.util.List;
 
-public interface NovelWebsiteParsable {
+public interface WebsiteParsable {
 
     List<NovelInfo> search(String keyWord);
 

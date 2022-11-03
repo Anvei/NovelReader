@@ -27,7 +27,8 @@
             android:exported="false" />
         <activity
             android:name=".activity.SearchActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".activity.ReadPageActivity"
             android:exported="false" />

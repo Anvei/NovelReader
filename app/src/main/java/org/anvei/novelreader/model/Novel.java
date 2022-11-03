@@ -82,4 +82,13 @@ public class Novel {
     public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Novel{" +
+                "name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                '}';
+    }
 }

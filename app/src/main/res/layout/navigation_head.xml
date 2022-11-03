@@ -3,15 +3,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView android:id="@+id/chapterPage_novelName"
+    <TextView
+        android:id="@+id/navigationHeaderTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginHorizontal="15dp"
         android:textSize="20sp"
+        android:maxLines="1"
+        android:textColor="@color/text_color"
         android:layout_marginBottom="20dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chapterPage_chapterList"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/navigationHeaderRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </ScrollView>
 
 </LinearLayout>

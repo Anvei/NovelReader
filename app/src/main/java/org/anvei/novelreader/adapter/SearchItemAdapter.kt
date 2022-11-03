@@ -25,7 +25,7 @@ class SearchItemAdapter(private val list: List<NovelInfo>, private val context: 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.search_result_item, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.search_result_item, parent, false)
         return Holder(view)
     }
 
@@ -35,9 +35,12 @@ class SearchItemAdapter(private val list: List<NovelInfo>, private val context: 
         holder.author.text = novelInfo.novel.author
         holder.brief.text = novelInfo.introduction
 
-        if (novelInfo.picUrl != null) {
+        /*holder.image.setTag(R.id.searchItemCover, novelInfo.picUrl)
+        // TODO: 处理异步加载情况下，RecyclerView图片错乱问题
+        if (holder.image.getTag(R.id.searchItemCover) != null &&
+                holder.image.getTag(R.id.searchItemCover).equals(novelInfo.picUrl)) {
             Glide.with(context).load(novelInfo.picUrl).into(holder.image)
-        }
+        }*/
 
         holder.view.setOnClickListener{
             // 启动小说主页界面
@@ -47,6 +50,7 @@ class SearchItemAdapter(private val list: List<NovelInfo>, private val context: 
             intent.putExtra(BaseActivity.EXTRA_NOVEL_HOME_AUTHOR, novelInfo.novel.author)
             intent.putExtra(BaseActivity.EXTRA_NOVEL_HOME_BRIEF, novelInfo.introduction)
             intent.putExtra(BaseActivity.EXTRA_NOVEL_HOME_COVER, novelInfo.picUrl)
+            intent.putExtra(BaseActivity.EXTRA_NOVEL_HOME_WEBSITE, novelInfo.identifier)
             context.startActivity(intent)
         }
     }

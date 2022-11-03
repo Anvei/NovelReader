@@ -2,5 +2,7 @@ package org.anvei.novelreader.model;
 
 public enum WebsiteIdentifier {
     SFACG,
-    BIQUMU
+    BIQUMU,
+    YUNXI,
+    W147XS
 }
