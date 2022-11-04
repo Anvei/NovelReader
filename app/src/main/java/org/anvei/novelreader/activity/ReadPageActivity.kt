@@ -4,12 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
+import android.widget.*
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import org.anvei.novelreader.R
 import org.anvei.novelreader.adapter.ChapterItemAdapter
@@ -24,6 +23,8 @@ class ReadPageActivity : BaseActivity() {
 
     private lateinit var readPageDrawer: DrawerLayout
 
+    private lateinit var chapterTitle: TextView                 // 章节标题
+
     private lateinit var chapterContent: TextView               // 章节显示的内容
 
     private lateinit var chapterNavigationView: NavigationView  // NavigationView
@@ -34,13 +35,15 @@ class ReadPageActivity : BaseActivity() {
 
     private lateinit var novelTitle: TextView               // 章节列表之上显示的小说名
 
+    private lateinit var scrollView: ScrollView
+
+    private lateinit var chapterFloatingView: LinearLayout      // 点击章节页面之后出现的浮动面板
+
     private lateinit var chapterListAdapter: ChapterItemAdapter
 
     private val chapterList = ArrayList<ChapterInfo>()
 
-    private var currentIndex = 0
-
-    private lateinit var floatingButton: FloatingActionButton
+    private var currentIndex = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +68,7 @@ class ReadPageActivity : BaseActivity() {
             if (chapterList.size != 0) {
                 val firstChapter = novelParser.loadChapter(chapterList[0])
                 runOnUiThread {
+                    chapterTitle.text = firstChapter.name
                     chapterContent.text = firstChapter.content
                 }
             }
@@ -72,13 +76,73 @@ class ReadPageActivity : BaseActivity() {
 
     }
 
+    private fun setChapter(chapterInfo: ChapterInfo) {
+        Thread {
+            val chapter = novelParser.loadChapter(chapterInfo)
+            runOnUiThread {
+                chapterTitle.text = chapter.name
+                chapterContent.text = chapter.content
+                setCurrentIndex(chapterInfo.index)
+                scrollChapterContentToTop()
+            }
+        }.start()
+    }
+
+    fun setCurrentIndex(index: Int) {
+        currentIndex = index
+    }
+
+    fun getCurrentIndex() = currentIndex
+
+    /**
+     * 章节内容定位到顶部，有BUG，需要调用两次才能保证滑动到顶部
+     */
+    fun scrollChapterContentToTop() {
+        scrollView.fullScroll(View.FOCUS_UP)
+        scrollView.fullScroll(View.FOCUS_UP)
+    }
+
     private fun initView() {
         readPageDrawer = findViewById(R.id.readPageDrawer)
 
+        scrollView = findViewById(R.id.scrollContent)
+
         chapterContent = findViewById(R.id.readContent)
+        chapterTitle = findViewById(R.id.readChapterTitle)
         chapterNavigationView = findViewById(R.id.readNavigation)
         navigationHeaderView = chapterNavigationView.getHeaderView(0)
+        chapterFloatingView = findViewById(R.id.chapterFloatingView)
 
+        findViewById<Button>(R.id.chapterListDisplay).setOnClickListener {
+            // TODO: 滑动到当前章节位置
+            readPageDrawer.openDrawer(GravityCompat.START)
+            chapterFloatingView.visibility = View.GONE
+        }
+
+        // 配置上一章、下一章按钮的点击事件
+        findViewById<ImageButton>(R.id.lastChapter).setOnClickListener {
+            if (currentIndex > 1) {
+                setChapter(chapterList[currentIndex - 2])
+            } else {
+                Toast.makeText(this, "当前已经是第一章!", Toast.LENGTH_SHORT).show()
+            }
+        }
+        findViewById<ImageButton>(R.id.nextChapter).setOnClickListener {
+            if (currentIndex < chapterList.size) {
+                setChapter(chapterList[currentIndex])
+            } else {
+                Toast.makeText(this, "当前已经是最后一章!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // TODO: 当文字比较短时，无法监听全屏任意位置的点击事件
+        chapterContent.setOnClickListener {
+            if (chapterFloatingView.visibility == View.GONE) {
+                chapterFloatingView.visibility = View.VISIBLE
+            } else {
+                chapterFloatingView.visibility = View.GONE
+            }
+        }
         chapterListView = navigationHeaderView.findViewById(R.id.navigationHeaderRecycler)
         novelTitle = navigationHeaderView.findViewById(R.id.navigationHeaderTitle)
 
@@ -86,11 +150,6 @@ class ReadPageActivity : BaseActivity() {
         chapterListView.adapter = chapterListAdapter
         chapterListView.layoutManager = LinearLayoutManager(this)
 
-        floatingButton = findViewById(R.id.floatingButton)
-        floatingButton.setOnClickListener{
-            // TODO: 滑动到当前章节位置
-            readPageDrawer.openDrawer(GravityCompat.START)
-        }
     }
 
     companion object {

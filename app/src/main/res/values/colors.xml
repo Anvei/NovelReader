@@ -14,6 +14,15 @@
 
     <color name="text_color">#000000</color>
     <color name="chapter_list_item_clicked_text_color">#FF4E4E</color>
+
+    <color name="chapter_title_splitter">#919191</color>
+
+    <color name="app_main_theme">#FF4E4E</color>
+
+    <color name="chapter_page_ic">#000000</color>
+    <color name="chapter_page_floating_view">#FFFFFF</color>
+
+    <color name="chapter_content_background">#cacaca</color>
     
     <color name="translucent">#00000000</color>
 

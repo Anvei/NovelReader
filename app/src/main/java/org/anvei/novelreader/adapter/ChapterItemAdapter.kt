@@ -1,21 +1,25 @@
 package org.anvei.novelreader.adapter
 
-import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.R
+import org.anvei.novelreader.activity.ReadPageActivity
 import org.anvei.novelreader.model.ChapterInfo
 import org.anvei.novelreader.novel.WebsiteNovelParser
 
-class ChapterItemAdapter(private val list: List<ChapterInfo>, private val activity: Activity,
+class ChapterItemAdapter(private val list: List<ChapterInfo>, private val activity: ReadPageActivity,
     private val novelParser: WebsiteNovelParser
 ) : RecyclerView.Adapter<ChapterItemAdapter.Holder>() {
 
     private val chapterContentView: TextView = activity.findViewById(R.id.readContent)
+
+    private val chapterTitleView: TextView = activity.findViewById(R.id.readChapterTitle)
+
+    private var lastIndex = -1          // 记录上一个章节号
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.chapterListItem)
@@ -34,18 +38,25 @@ class ChapterItemAdapter(private val list: List<ChapterInfo>, private val activi
             Thread {
                 val chapter = novelParser.loadChapter(chapterInfo)
                 activity.runOnUiThread {
+                    chapterTitleView.text = chapter.name
                     chapterContentView.text = chapter.content
-                    // 给当前章节设置选中的颜色
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                        holder.textView.setTextColor(activity.resources.getColor(R.color.chapter_list_item_clicked_text_color, null))
-//                    } else {
-//                        holder.textView.setTextColor(activity.resources.getColor(R.color.chapter_list_item_clicked_text_color))
-//                    }
-                    // 定位到顶部，有BUG，需要调用两次才能保证滑动到顶部
-                    activity.findViewById<ScrollView>(R.id.scrollContent).fullScroll(View.FOCUS_UP)
-                    activity.findViewById<ScrollView>(R.id.scrollContent).fullScroll(View.FOCUS_UP)
+                    // TODO: 给当前章节设置选中的颜色
+                    lastIndex = activity.getCurrentIndex()
+                    this.notifyItemChanged(lastIndex - 1)
+                    Log.d("Anvei", "lastIndex: $lastIndex, currentIndex: ${chapterInfo.index}")
+                    activity.setCurrentIndex(chapterInfo.index)
+
+                    holder.textView.setTextColor(activity.resources
+                        .getColor(R.color.chapter_list_item_clicked_text_color))
+
+                    activity.scrollChapterContentToTop()
                 }
             }.start()
+        }
+        if (lastIndex == position) {
+            Log.d("Anvei", "Change: $lastIndex")
+            holder.textView.setTextColor(activity.resources
+                .getColor(R.color.text_color))
         }
     }
 

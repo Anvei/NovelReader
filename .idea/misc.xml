@@ -4,7 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/home.xml" value="0.1" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_arrow_left.xml" value="0.1205" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_arrow_right.xml" value="0.1205" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_back.xml" value="0.145" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_chapter_content.xml" value="0.1195" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_font_setting.xml" value="0.1195" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_main_book_shelf.xml" value="0.2075" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_main_book_shelf_active.xml" value="0.121" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_main_book_shelf_radio.xml" value="0.121" />
@@ -13,6 +17,8 @@
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_main_suggest.xml" value="0.1" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_main_suggest_active.xml" value="0.121" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_main_sugget_radio.xml" value="0.121" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_read_page_novel_home.xml" value="0.1195" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_read_page_translation.xml" value="0.1195" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/main_book_shelf_icon.xml" value="0.2065" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/search.xml" value="0.1875" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/activity_main.xml" value="0.1" />
