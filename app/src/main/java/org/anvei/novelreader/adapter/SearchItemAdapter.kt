@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.R
-import org.anvei.novelreader.activity.ReadPageActivity
+import org.anvei.novelreader.activity.NovelHomeActivity
 import org.anvei.novelreader.model.NovelInfo
 
 class SearchItemAdapter(private val list: List<NovelInfo>, private val context: Context)
@@ -41,10 +41,7 @@ class SearchItemAdapter(private val list: List<NovelInfo>, private val context: 
 
         holder.view.setOnClickListener{
             // 启动小说主页界面
-            val startActivityInfo = ReadPageActivity.StartActivityInfo(novelInfo.novel.name,
-                novelInfo.novel.author, novelInfo.url, novelInfo.introduction, novelInfo.picUrl,
-                novelInfo.identifier)
-            ReadPageActivity.startActivity(context, startActivityInfo)
+            NovelHomeActivity.startActivity(context, novelInfo)
         }
     }
 

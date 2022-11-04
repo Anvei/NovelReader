@@ -13,6 +13,7 @@ import com.google.android.material.navigation.NavigationView
 import org.anvei.novelreader.R
 import org.anvei.novelreader.adapter.ChapterItemAdapter
 import org.anvei.novelreader.model.ChapterInfo
+import org.anvei.novelreader.model.NovelInfo
 import org.anvei.novelreader.novel.NovelParserFactory
 import org.anvei.novelreader.novel.WebsiteIdentifier
 import org.anvei.novelreader.novel.WebsiteNovelParser
@@ -20,6 +21,8 @@ import org.anvei.novelreader.novel.WebsiteNovelParser
 class ReadPageActivity : BaseActivity() {
 
     private lateinit var novelParser: WebsiteNovelParser        // 网络小说解析器
+
+    private lateinit var novelInfo: NovelInfo
 
     private lateinit var readPageDrawer: DrawerLayout
 
@@ -49,19 +52,16 @@ class ReadPageActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_read_page)
 
-        val name = intent.getStringExtra(EXTRA_NOVEL_HOME_NAME)
-        val author = intent.getStringExtra(EXTRA_NOVEL_HOME_AUTHOR)
-        val url = intent.getStringExtra(EXTRA_NOVEL_HOME_URL)
+        novelInfo = intent.getSerializableExtra(EXTRA_NOVEL_INFO) as NovelInfo
 
         // 根据小说网站标识符初始化相应的网络小说解析器
-        val identifier = intent.getSerializableExtra(EXTRA_NOVEL_HOME_WEBSITE)
-        novelParser = NovelParserFactory.getParser(identifier as WebsiteIdentifier)
+        novelParser = NovelParserFactory.getParser(novelInfo.identifier)
 
         initView()
-        novelTitle.text = name
+        novelTitle.text = novelInfo.novel.name
 
         Thread {
-            chapterList.addAll(novelParser.loadNovel(url))
+            chapterList.addAll(novelParser.loadNovel(novelInfo.url))
             runOnUiThread {
                 chapterListAdapter.notifyItemRangeChanged(0, chapterList.size)
             }
@@ -118,7 +118,9 @@ class ReadPageActivity : BaseActivity() {
             readPageDrawer.openDrawer(GravityCompat.START)
             chapterFloatingView.visibility = View.GONE
         }
-
+        findViewById<Button>(R.id.chapterPageNovelHome).setOnClickListener {
+            NovelHomeActivity.startActivity(this, novelInfo)
+        }
         // 配置上一章、下一章按钮的点击事件
         findViewById<ImageButton>(R.id.lastChapter).setOnClickListener {
             if (currentIndex > 1) {
@@ -149,23 +151,17 @@ class ReadPageActivity : BaseActivity() {
         chapterListAdapter = ChapterItemAdapter(chapterList, this, novelParser)
         chapterListView.adapter = chapterListAdapter
         chapterListView.layoutManager = LinearLayoutManager(this)
-
     }
 
     companion object {
-        fun startActivity(context: Context, startActivityInfo: StartActivityInfo) {
+        /**
+         * 用来启动ReadPageActivity
+         */
+        fun startActivity(context: Context, startActivityInfo: NovelInfo) {
             val intent = Intent(context, ReadPageActivity::class.java)
-            intent.putExtra(EXTRA_NOVEL_HOME_NAME, startActivityInfo.novelName)
-            intent.putExtra(EXTRA_NOVEL_HOME_AUTHOR, startActivityInfo.author)
-            intent.putExtra(EXTRA_NOVEL_HOME_URL, startActivityInfo.novelUrl)
-            intent.putExtra(EXTRA_NOVEL_HOME_BRIEF, startActivityInfo.introduction)
-            intent.putExtra(EXTRA_NOVEL_HOME_COVER, startActivityInfo.picUrl)
-            intent.putExtra(EXTRA_NOVEL_HOME_WEBSITE, startActivityInfo.identifier)
+            intent.putExtra(EXTRA_NOVEL_INFO, startActivityInfo)
             context.startActivity(intent)
         }
     }
-
-    data class StartActivityInfo(val novelName: String, val author: String, val novelUrl: String,
-        val introduction: String?, val picUrl: String?, val identifier: WebsiteIdentifier)
 
 }

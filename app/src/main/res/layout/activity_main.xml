@@ -13,6 +13,7 @@
         android:id="@+id/mainRadio"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:layout_marginBottom="5dp"
         android:gravity="center_vertical"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
@@ -37,7 +38,7 @@
             android:button="@null"
             android:gravity="center"
             android:checked="false"
-            android:drawableTop="@drawable/ic_main_suggest_radio"
+            android:drawableTop="@drawable/ic_main_find_radio"
             android:text="推荐"
             android:textColor="@color/main_icon_stroke"/>
 

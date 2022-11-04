@@ -15,18 +15,19 @@
     <color name="text_color">#000000</color>
     <color name="chapter_list_item_clicked_text_color">#FF4E4E</color>
 
+    <!--阅读界面章节内容与章节的标题的分割线的颜色-->
     <color name="chapter_title_splitter">#919191</color>
-
+    <!--章节列表中章节之间的分割线-->
+    <color name="chapter_list_item_splitter">#F0F0F0</color>
+    <!--应用的主题色-->
     <color name="app_main_theme">#FF4E4E</color>
-
+    <!--阅读界面的图标颜色-->
     <color name="chapter_page_ic">#000000</color>
+    <!--阅读界面的设置面板背景色-->
     <color name="chapter_page_floating_view">#FFFFFF</color>
 
+    <!--章节阅读界面的背景色-->
     <color name="chapter_content_background">#cacaca</color>
     
     <color name="translucent">#00000000</color>
-
-    <color name="light_coffee">#A58D5E</color>
-
-    <color name="splitter">#F0F0F0</color>
 </resources>

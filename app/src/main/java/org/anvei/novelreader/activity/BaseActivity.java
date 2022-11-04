@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
 
+    protected static final String EXTRA_NOVEL_INFO = "org.anvei.novel.info";
+
     protected static final String EXTRA_SEARCH_KEYWORD = "org.anvei.search.keyword";
 
     protected static final String EXTRA_NOVEL_HOME_NAME = "org.anvei.novel.home.name";
@@ -25,6 +27,8 @@ public class BaseActivity extends AppCompatActivity {
     public static final String TABLE_WEB_CACHE = "WebCache";
 
     public static final String TABLE_HISTORY = "History";
+
+    public static final String TABLE_BOOK_SHELF_ITEM = "BookShelfItem";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

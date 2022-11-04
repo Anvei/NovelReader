@@ -4,11 +4,12 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Novel {
+public class Novel implements Serializable {
 
     private final String name;                  // 小说名称
 

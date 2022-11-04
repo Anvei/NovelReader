@@ -3,8 +3,9 @@ package org.anvei.novelreader.model;
 import androidx.annotation.NonNull;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class ChapterInfo {
+public class ChapterInfo implements Serializable {
 
     private final Chapter chapter;
 
@@ -12,7 +13,7 @@ public class ChapterInfo {
 
     private final int index;
 
-    private String url;         // url地址，可能会有多页
+    private String url;         // url地址
 
     public ChapterInfo(@NonNull Chapter chapter, int index) {
         this.chapter = chapter;

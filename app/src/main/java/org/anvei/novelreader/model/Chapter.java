@@ -3,10 +3,11 @@ package org.anvei.novelreader.model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.Date;
 
 // 表示一个章节
-public class Chapter {
+public class Chapter implements Serializable {
 
     private final String name;              // 章节名
 

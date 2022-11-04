@@ -5,8 +5,9 @@ import androidx.annotation.NonNull;
 import org.anvei.novelreader.novel.WebsiteIdentifier;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class NovelInfo {
+public class NovelInfo implements Serializable {
 
     private final Novel novel;
 
@@ -16,9 +17,13 @@ public class NovelInfo {
 
     private String url;                 // 小说地址
 
+    private File cache;
+
     private String picUrl;              // 小说封面地址
 
     private File cachePic;              // 缓存的小说封面
+
+    private ChapterInfo newestChapter;
 
     public NovelInfo(@NonNull Novel novel, @NonNull WebsiteIdentifier identifier) {
         this.novel = novel;
@@ -63,5 +68,21 @@ public class NovelInfo {
     public NovelInfo setCachePic(File cachePic) {
         this.cachePic = cachePic;
         return this;
+    }
+
+    public File getCache() {
+        return cache;
+    }
+
+    public void setCache(File cache) {
+        this.cache = cache;
+    }
+
+    public ChapterInfo getNewestChapter() {
+        return newestChapter;
+    }
+
+    public void setNewestChapter(ChapterInfo newestChapter) {
+        this.newestChapter = newestChapter;
     }
 }
