@@ -1,6 +1,6 @@
 package org.anvei.novelreader.utils;
 
-import org.anvei.novelreader.model.WebsiteIdentifier;
+import org.anvei.novelreader.novel.WebsiteIdentifier;
 
 /**
  * 缓存文件生成规则:<br/>

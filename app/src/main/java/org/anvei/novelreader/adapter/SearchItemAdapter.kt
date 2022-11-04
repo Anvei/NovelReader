@@ -1,16 +1,13 @@
 package org.anvei.novelreader.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import org.anvei.novelreader.R
-import org.anvei.novelreader.activity.BaseActivity
 import org.anvei.novelreader.activity.ReadPageActivity
 import org.anvei.novelreader.model.NovelInfo
 
@@ -44,14 +41,10 @@ class SearchItemAdapter(private val list: List<NovelInfo>, private val context: 
 
         holder.view.setOnClickListener{
             // 启动小说主页界面
-            val intent = Intent(context, ReadPageActivity::class.java)
-            intent.putExtra(BaseActivity.EXTRA_NOVEL_HOME_NAME, novelInfo.novel.name)
-            intent.putExtra(BaseActivity.EXTRA_NOVEL_HOME_URL, novelInfo.url)
-            intent.putExtra(BaseActivity.EXTRA_NOVEL_HOME_AUTHOR, novelInfo.novel.author)
-            intent.putExtra(BaseActivity.EXTRA_NOVEL_HOME_BRIEF, novelInfo.introduction)
-            intent.putExtra(BaseActivity.EXTRA_NOVEL_HOME_COVER, novelInfo.picUrl)
-            intent.putExtra(BaseActivity.EXTRA_NOVEL_HOME_WEBSITE, novelInfo.identifier)
-            context.startActivity(intent)
+            val startActivityInfo = ReadPageActivity.StartActivityInfo(novelInfo.novel.name,
+                novelInfo.novel.author, novelInfo.url, novelInfo.introduction, novelInfo.picUrl,
+                novelInfo.identifier)
+            ReadPageActivity.startActivity(context, startActivityInfo)
         }
     }
 

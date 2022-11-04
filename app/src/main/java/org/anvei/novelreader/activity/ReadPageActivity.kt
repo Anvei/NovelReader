@@ -1,9 +1,9 @@
 package org.anvei.novelreader.activity
 
-import android.os.Build
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.widget.TextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -14,11 +14,9 @@ import com.google.android.material.navigation.NavigationView
 import org.anvei.novelreader.R
 import org.anvei.novelreader.adapter.ChapterItemAdapter
 import org.anvei.novelreader.model.ChapterInfo
-import org.anvei.novelreader.model.WebsiteIdentifier
-import org.anvei.novelreader.novel.parser.BiqumuParser
+import org.anvei.novelreader.novel.NovelParserFactory
+import org.anvei.novelreader.novel.WebsiteIdentifier
 import org.anvei.novelreader.novel.WebsiteNovelParser
-import org.anvei.novelreader.novel.parser.SfacgParser
-import org.anvei.novelreader.novel.parser.W147xsParser
 
 class ReadPageActivity : BaseActivity() {
 
@@ -53,17 +51,9 @@ class ReadPageActivity : BaseActivity() {
         val url = intent.getStringExtra(EXTRA_NOVEL_HOME_URL)
 
         // 根据小说网站标识符初始化相应的网络小说解析器
-        when (intent.getSerializableExtra(EXTRA_NOVEL_HOME_WEBSITE)) {
-            WebsiteIdentifier.SFACG -> {
-                novelParser = SfacgParser()
-            }
-            WebsiteIdentifier.BIQUMU -> {
-                novelParser = BiqumuParser()
-            }
-            WebsiteIdentifier.W147XS -> {
-                novelParser = W147xsParser()
-            }
-        }
+        val identifier = intent.getSerializableExtra(EXTRA_NOVEL_HOME_WEBSITE)
+        novelParser = NovelParserFactory.getParser(identifier as WebsiteIdentifier)
+
         initView()
         novelTitle.text = name
 
@@ -103,6 +93,20 @@ class ReadPageActivity : BaseActivity() {
         }
     }
 
+    companion object {
+        fun startActivity(context: Context, startActivityInfo: StartActivityInfo) {
+            val intent = Intent(context, ReadPageActivity::class.java)
+            intent.putExtra(EXTRA_NOVEL_HOME_NAME, startActivityInfo.novelName)
+            intent.putExtra(EXTRA_NOVEL_HOME_AUTHOR, startActivityInfo.author)
+            intent.putExtra(EXTRA_NOVEL_HOME_URL, startActivityInfo.novelUrl)
+            intent.putExtra(EXTRA_NOVEL_HOME_BRIEF, startActivityInfo.introduction)
+            intent.putExtra(EXTRA_NOVEL_HOME_COVER, startActivityInfo.picUrl)
+            intent.putExtra(EXTRA_NOVEL_HOME_WEBSITE, startActivityInfo.identifier)
+            context.startActivity(intent)
+        }
+    }
 
+    data class StartActivityInfo(val novelName: String, val author: String, val novelUrl: String,
+        val introduction: String?, val picUrl: String?, val identifier: WebsiteIdentifier)
 
 }

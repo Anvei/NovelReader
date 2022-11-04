@@ -6,9 +6,8 @@ import org.anvei.novelreader.model.Chapter;
 import org.anvei.novelreader.model.ChapterInfo;
 import org.anvei.novelreader.model.Novel;
 import org.anvei.novelreader.model.NovelInfo;
-import org.anvei.novelreader.model.WebsiteIdentifier;
+import org.anvei.novelreader.novel.WebsiteIdentifier;
 import org.anvei.novelreader.novel.WebsiteNovelParser;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -19,8 +18,6 @@ import java.util.Date;
 import java.util.List;
 
 public class SfacgParser extends WebsiteNovelParser {
-
-    public static final WebsiteIdentifier identifier = WebsiteIdentifier.SFACG;
 
     // The home page address of the SFACG website
     private static final String homeUrl = "https://book.sfacg.com/";
@@ -41,6 +38,11 @@ public class SfacgParser extends WebsiteNovelParser {
     private static final String SELECT_CHAPTER_CONTENT = "#ChapterBody > p";
 
     public SfacgParser() {
+    }
+
+    @Override
+    public WebsiteIdentifier getWebsiteIdentifier() {
+        return WebsiteIdentifier.SFACG;
     }
 
     /**
@@ -93,7 +95,7 @@ public class SfacgParser extends WebsiteNovelParser {
                     }
                     Novel novel = new Novel(novelName, author);
                     novel.setLastUpdate(lastUpdate);
-                    NovelInfo novelInfo = new NovelInfo(novel, identifier)
+                    NovelInfo novelInfo = new NovelInfo(novel, getWebsiteIdentifier())
                             .setPicUrl(imgSrc)
                             .setIntroduction(novelIntro)
                             .setUrl(novelUrl);

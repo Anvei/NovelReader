@@ -4,7 +4,7 @@ import org.anvei.novelreader.model.Chapter;
 import org.anvei.novelreader.model.ChapterInfo;
 import org.anvei.novelreader.model.Novel;
 import org.anvei.novelreader.model.NovelInfo;
-import org.anvei.novelreader.model.WebsiteIdentifier;
+import org.anvei.novelreader.novel.WebsiteIdentifier;
 import org.anvei.novelreader.novel.WebsiteNovelParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,8 +17,6 @@ import java.util.List;
 
 public class W147xsParser extends WebsiteNovelParser {
 
-    public static final WebsiteIdentifier identifier = WebsiteIdentifier.W147XS;
-
     private static final String homeUrl = "https://www.147xs.org";
 
     private static final String searchApi = "https://www.147xs.org/search.php";
@@ -28,6 +26,14 @@ public class W147xsParser extends WebsiteNovelParser {
     private static final String SELECT_CHAPTER_LIST = "#list > dl > dd > a";
 
     private static final String SELECT_CHAPTER_CONTENT = "#content > p";
+
+    public W147xsParser() {
+    }
+
+    @Override
+    public WebsiteIdentifier getWebsiteIdentifier() {
+        return WebsiteIdentifier.W147XS;
+    }
 
     @Override
     public List<NovelInfo> search(String keyWord) {
@@ -43,7 +49,7 @@ public class W147xsParser extends WebsiteNovelParser {
                 String novelUrl = element.select("td:nth-child(2) > a").attr("href");
                 String novelName = element.select("td:nth-child(2) > a").text();
                 String author = element.select("td:nth-child(4)").text();
-                NovelInfo novelInfo = new NovelInfo(new Novel(novelName, author), WebsiteIdentifier.W147XS);
+                NovelInfo novelInfo = new NovelInfo(new Novel(novelName, author), getWebsiteIdentifier());
                 novelInfo.setUrl(novelUrl);
                 novelInfoList.add(novelInfo);
             }
@@ -95,7 +101,7 @@ public class W147xsParser extends WebsiteNovelParser {
             Elements paras = document.select(SELECT_CHAPTER_CONTENT);      // 获取<p></p>标签
             for (Element para : paras) {
                 String paraText = para.text().trim();
-                if (!paraText.startsWith("【话说")) {      // 过滤网站的垃圾信息
+                if (!paraText.startsWith("【")) {      // 过滤网站的垃圾信息
                     stringBuilder.append(PARA_PREFIX)
                             .append(para.text().trim())
                             .append(PARA_SUFFIX);

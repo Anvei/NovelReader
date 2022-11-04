@@ -6,7 +6,7 @@ import org.anvei.novelreader.model.Chapter;
 import org.anvei.novelreader.model.ChapterInfo;
 import org.anvei.novelreader.model.Novel;
 import org.anvei.novelreader.model.NovelInfo;
-import org.anvei.novelreader.model.WebsiteIdentifier;
+import org.anvei.novelreader.novel.WebsiteIdentifier;
 import org.anvei.novelreader.novel.WebsiteNovelParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BiqumuParser extends WebsiteNovelParser {
-
-    public static final WebsiteIdentifier identifier = WebsiteIdentifier.BIQUMU;
 
     private static final String homeUrl = "http://www.biqumu.com";
 
@@ -38,6 +36,11 @@ public class BiqumuParser extends WebsiteNovelParser {
     private static final String SELECT_OPTION = "body > div.container > div:nth-child(2) > div > div:nth-child(4) > select > option";
 
     public BiqumuParser() {
+    }
+
+    @Override
+    public WebsiteIdentifier getWebsiteIdentifier() {
+        return WebsiteIdentifier.BIQUMU;
     }
 
     private Document getSearchResult(@NonNull String keyWord) throws IOException {
@@ -61,7 +64,7 @@ public class BiqumuParser extends WebsiteNovelParser {
                 String novelUrl = li.select("span.n2 > a").attr("href");
                 String name = li.select("span.n2 > a").text();
                 String author = li.select("span.n4").text();
-                NovelInfo novelInfo = new NovelInfo(new Novel(name, author), identifier);
+                NovelInfo novelInfo = new NovelInfo(new Novel(name, author), getWebsiteIdentifier());
                 novelInfo.setUrl(homeUrl + novelUrl);
                 novelInfoList.add(novelInfo);
             }

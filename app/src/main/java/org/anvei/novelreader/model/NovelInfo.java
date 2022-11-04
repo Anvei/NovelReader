@@ -2,6 +2,8 @@ package org.anvei.novelreader.model;
 
 import androidx.annotation.NonNull;
 
+import org.anvei.novelreader.novel.WebsiteIdentifier;
+
 import java.io.File;
 
 public class NovelInfo {

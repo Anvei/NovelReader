@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface WebsiteParsable {
 
+    WebsiteIdentifier getWebsiteIdentifier();
+
     List<NovelInfo> search(String keyWord);
 
     List<NovelInfo> searchByAuthor(String author);
