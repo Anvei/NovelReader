@@ -5,9 +5,9 @@ import androidx.annotation.Nullable;
 import java.lang.reflect.Field;
 
 public enum WebsiteIdentifier {
+    UNKNOWN,
     SFACG,
     BIQUMU,
-    //YUNXI,
     W147XS;
 
     public static @Nullable WebsiteIdentifier getIdentifier(String str) {

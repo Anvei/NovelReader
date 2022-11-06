@@ -49,8 +49,8 @@ class BookShelfAdapter(val list: List<NovelInfo>, val context: Context) :
             ReadPageActivity.startActivity(context, novelInfo)
         }
         holder.delete.setOnClickListener {
-            val database = BookShelfHelper(context, "anvei", null, 1).writableDatabase
-            database.delete("BookShelfItem", "website = ? and novel = ?", arrayOf(novelInfo.identifier.name, novelInfo.novel.name))
+            val database = BookShelfHelper(context, BaseActivity.DATABASE_NAME, null, 1).writableDatabase
+            database.delete(BaseActivity.TABLE_BOOK_SHELF_ITEM, "website = ? and novel = ?", arrayOf(novelInfo.identifier.name, novelInfo.novel.name))
         }
     }
 

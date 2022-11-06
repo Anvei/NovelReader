@@ -63,7 +63,6 @@ class NovelHomeActivity : BaseActivity() {
             Glide.with(this).load(novelInfo.picUrl).into(novelCoverView)
         }
 
-
         likeButton.setOnClickListener {
             val cursor = database.query(TABLE_BOOK_SHELF_ITEM, null, "website = ? and novel = ?",
                 arrayOf(novelInfo.identifier.name, novelInfo.novel.name), null, null, null)
@@ -74,7 +73,7 @@ class NovelHomeActivity : BaseActivity() {
                 contentValues.put("author", novelInfo.novel.author)
                 contentValues.put("url", novelInfo.url)
                 contentValues.put("pic_url", novelInfo.picUrl)
-                database.insert(TABLE_BOOK_SHELF_ITEM, "null", contentValues)
+                database.insert(TABLE_BOOK_SHELF_ITEM, null, contentValues)
             } else {
                 Toast.makeText(this, "已经在书架中！", Toast.LENGTH_SHORT).show()
             }

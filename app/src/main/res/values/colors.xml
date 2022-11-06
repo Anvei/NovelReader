@@ -27,7 +27,7 @@
     <color name="chapter_page_floating_view">#FFFFFF</color>
 
     <!--章节阅读界面的背景色-->
-    <color name="chapter_content_background">#cacaca</color>
+    <color name="chapter_content_background">#FFFFFF</color>
     
     <color name="translucent">#00000000</color>
 </resources>

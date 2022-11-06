@@ -37,9 +37,11 @@ public final class NovelParserFactory {
         Class<WebsiteIdentifier> clazz = WebsiteIdentifier.class;
         Field[] fields = clazz.getFields();
         for (Field field : fields) {
-            WebsiteNovelParser parser = getParser(field.getName());
-            if (parser != null) {
-                parsers.add(parser);
+            if (!field.getName().equals("UNKNOWN")) {
+                WebsiteNovelParser parser = getParser(field.getName());
+                if (parser != null) {
+                    parsers.add(parser);
+                }
             }
         }
         return parsers;

@@ -29,15 +29,8 @@ class SearchItemAdapter(private val list: List<NovelInfo>, private val context: 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val novelInfo = list[position]
         holder.novel.text = novelInfo.novel.name
-        holder.author.text = novelInfo.novel.author
+        holder.author.text = novelInfo.novel.author + " - [${novelInfo.identifier.name}]"
         holder.brief.text = novelInfo.introduction
-
-        /*holder.image.setTag(R.id.searchItemCover, novelInfo.picUrl)
-        // TODO: 处理异步加载情况下，RecyclerView图片错乱问题
-        if (holder.image.getTag(R.id.searchItemCover) != null &&
-                holder.image.getTag(R.id.searchItemCover).equals(novelInfo.picUrl)) {
-            Glide.with(context).load(novelInfo.picUrl).into(holder.image)
-        }*/
 
         holder.view.setOnClickListener{
             // 启动小说主页界面

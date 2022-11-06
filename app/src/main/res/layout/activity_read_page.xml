@@ -13,50 +13,19 @@
         android:layout_height="match_parent">
 
         <ScrollView
-            android:id="@+id/scrollContent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/chapter_content_background"
-            android:scrollbars="none"
-            android:overScrollMode="never" >
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginHorizontal="10dp"
+                android:id="@+id/chapterContentRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginHorizontal="10dp">
-
-                <TextView
-                    android:id="@+id/readChapterTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/text_color"
-                    android:background="@color/chapter_content_background"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="8dp"
-                    android:background="@color/chapter_title_splitter"/>
-
-                <TextView
-                    android:id="@+id/readContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_color"
-                    android:background="@color/chapter_content_background"
-                    android:lineSpacingMultiplier="1.5"/>
-
-            </LinearLayout>
+                android:layout_height="wrap_content"/>
 
         </ScrollView>
 
         <LinearLayout
-            android:id="@+id/chapterFloatingView"
+            android:id="@+id/chapterSettingView"
             android:layout_width="match_parent"
             android:layout_height="135dp"
             android:layout_gravity="bottom"
