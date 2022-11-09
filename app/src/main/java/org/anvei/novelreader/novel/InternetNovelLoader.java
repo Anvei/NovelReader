@@ -1,6 +1,6 @@
 package org.anvei.novelreader.novel;
 
-import org.anvei.novelreader.model.Novel;
+import org.anvei.novelreader.beans.Novel;
 
 /**
  * implementation of the web novel loader<br/><br/>

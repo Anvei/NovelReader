@@ -1,8 +1,9 @@
 package org.anvei.novelreader.novel;
 
-import org.anvei.novelreader.model.Chapter;
-import org.anvei.novelreader.model.ChapterInfo;
-import org.anvei.novelreader.model.NovelInfo;
+
+import org.anvei.novelreader.beans.Chapter;
+import org.anvei.novelreader.beans.WebsiteChapterInfo;
+import org.anvei.novelreader.beans.WebsiteNovelInfo;
 
 import java.util.List;
 
@@ -10,16 +11,16 @@ public interface WebsiteParsable {
 
     WebsiteIdentifier getWebsiteIdentifier();
 
-    List<NovelInfo> search(String keyWord);
+    List<WebsiteNovelInfo> search(String keyWord);
 
-    List<NovelInfo> searchByAuthor(String author);
+    List<WebsiteNovelInfo> searchByAuthor(String author);
 
-    List<NovelInfo> searchByNovelName(String name);
+    List<WebsiteNovelInfo> searchByNovelName(String name);
 
-    List<ChapterInfo> loadNovel(NovelInfo novelInfo);
+    List<WebsiteChapterInfo> loadNovel(WebsiteNovelInfo novelInfo);
 
-    List<ChapterInfo> loadNovel(String novelUrl);
+    List<WebsiteChapterInfo> loadNovel(String novelUrl);
 
-    Chapter loadChapter(ChapterInfo chapterInfo);
+    Chapter loadChapter(WebsiteChapterInfo chapterInfo);
 
 }

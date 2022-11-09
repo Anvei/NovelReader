@@ -17,7 +17,7 @@ import org.anvei.novelreader.R
 import org.anvei.novelreader.adapter.BookShelfAdapter
 import org.anvei.novelreader.adapter.MainPagerAdapter
 import org.anvei.novelreader.disk.BookShelfHelper
-import org.anvei.novelreader.model.NovelInfo
+import org.anvei.novelreader.beans.WebsiteNovelInfo
 
 class MainActivity : BaseActivity() {
 
@@ -38,7 +38,7 @@ class MainActivity : BaseActivity() {
     // 书架相关变量
     private lateinit var bookShelfItemRecyclerView: RecyclerView
     private lateinit var bookShelfItemAdapter: BookShelfAdapter
-    private val bookShelfItemList = ArrayList<NovelInfo>()
+    private val bookShelfItemList = ArrayList<WebsiteNovelInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +49,7 @@ class MainActivity : BaseActivity() {
     private fun initActivity() {
         initDatabase()
         initBookShelfItemList()
-        initWidget()
+        initComponent()
     }
 
     /**
@@ -69,7 +69,7 @@ class MainActivity : BaseActivity() {
     /**
      * 初始化控件
      */
-    private fun initWidget() {
+    private fun initComponent() {
         // 初始化主页ViewPager
         viewPager = findViewById(R.id.mainViewPager)
         mainBookShelf = layoutInflater.inflate(R.layout.main_book_shelf, null)

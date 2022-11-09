@@ -14,9 +14,9 @@ import org.anvei.novelreader.R
 import org.anvei.novelreader.activity.BaseActivity
 import org.anvei.novelreader.activity.ReadPageActivity
 import org.anvei.novelreader.disk.BookShelfHelper
-import org.anvei.novelreader.model.NovelInfo
+import org.anvei.novelreader.beans.WebsiteNovelInfo
 
-class BookShelfAdapter(val list: List<NovelInfo>, val context: Context) :
+class BookShelfAdapter(val list: List<WebsiteNovelInfo>, val context: Context) :
     RecyclerView.Adapter<BookShelfAdapter.Holder>() {
 
     class Holder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -35,22 +35,17 @@ class BookShelfAdapter(val list: List<NovelInfo>, val context: Context) :
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val novelInfo = list[position]
-        if (novelInfo.cachePic != null) {
-            Glide.with(context).load(novelInfo.cachePic).into(holder.cover)
-        }  else if (novelInfo.picUrl != null) {
-            Glide.with(context).load(novelInfo.picUrl).into(holder.cover)
+        if (novelInfo.coverUrl != null) {
+            Glide.with(context).load(novelInfo.coverUrl).into(holder.cover)
         }
-        holder.novelName.text = novelInfo.novel.name
-        holder.author.text = novelInfo.novel.author
-        if (novelInfo.newestChapter != null) {
-            holder.newestChapter.text = "最新章节: ${novelInfo.newestChapter.chapter.name}"
-        }
+        holder.novelName.text = novelInfo.novelName
+        holder.author.text = novelInfo.author
         holder.view.setOnClickListener {
             ReadPageActivity.startActivity(context, novelInfo)
         }
         holder.delete.setOnClickListener {
             val database = BookShelfHelper(context, BaseActivity.DATABASE_NAME, null, 1).writableDatabase
-            database.delete(BaseActivity.TABLE_BOOK_SHELF_ITEM, "website = ? and novel = ?", arrayOf(novelInfo.identifier.name, novelInfo.novel.name))
+            database.delete(BaseActivity.TABLE_BOOK_SHELF_ITEM, "website = ? and novel = ?", arrayOf(novelInfo.identifier.name, novelInfo.novelName))
         }
     }
 

@@ -13,14 +13,14 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import org.anvei.novelreader.R
 import org.anvei.novelreader.disk.BookShelfHelper
-import org.anvei.novelreader.model.NovelInfo
+import org.anvei.novelreader.beans.WebsiteNovelInfo
 import org.anvei.novelreader.novel.NovelParserFactory
 import org.anvei.novelreader.novel.WebsiteNovelParser
 
 // 小说主页显示
 class NovelHomeActivity : BaseActivity() {
 
-    private lateinit var novelInfo: NovelInfo
+    private lateinit var novelInfo: WebsiteNovelInfo
 
     private lateinit var novelParser: WebsiteNovelParser
 
@@ -39,7 +39,7 @@ class NovelHomeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_novel_home)
-        novelInfo = intent.getSerializableExtra(EXTRA_NOVEL_INFO) as NovelInfo
+        novelInfo = intent.getSerializableExtra(EXTRA_NOVEL_INFO) as WebsiteNovelInfo
         novelParser = NovelParserFactory.getParser(novelInfo.identifier)
 
         database = BookShelfHelper(this, DATABASE_NAME, null, 1).writableDatabase
@@ -55,24 +55,24 @@ class NovelHomeActivity : BaseActivity() {
         novelAuthorView = findViewById(R.id.novelHomeAuthor)
         novelCoverView = findViewById(R.id.novelHomeCover)
 
-        novelTitleView.text = novelInfo.novel.name
-        novelAuthorView.text = novelInfo.novel.author
+        novelTitleView.text = novelInfo.novelName
+        novelAuthorView.text = novelInfo.author
 
 
-        if (novelInfo.picUrl != null) {
-            Glide.with(this).load(novelInfo.picUrl).into(novelCoverView)
+        if (novelInfo.coverUrl != null) {
+            Glide.with(this).load(novelInfo.coverUrl).into(novelCoverView)
         }
 
         likeButton.setOnClickListener {
             val cursor = database.query(TABLE_BOOK_SHELF_ITEM, null, "website = ? and novel = ?",
-                arrayOf(novelInfo.identifier.name, novelInfo.novel.name), null, null, null)
+                arrayOf(novelInfo.identifier.name, novelInfo.novelName), null, null, null)
             if (!cursor.moveToNext()) {
                 val contentValues = ContentValues()
                 contentValues.put("website", novelInfo.identifier.name)
-                contentValues.put("novel", novelInfo.novel.name)
-                contentValues.put("author", novelInfo.novel.author)
-                contentValues.put("url", novelInfo.url)
-                contentValues.put("pic_url", novelInfo.picUrl)
+                contentValues.put("novel", novelInfo.novelName)
+                contentValues.put("author", novelInfo.author)
+                contentValues.put("url", novelInfo.novelUrl)
+                contentValues.put("pic_url", novelInfo.coverUrl)
                 database.insert(TABLE_BOOK_SHELF_ITEM, null, contentValues)
             } else {
                 Toast.makeText(this, "已经在书架中！", Toast.LENGTH_SHORT).show()
@@ -86,7 +86,7 @@ class NovelHomeActivity : BaseActivity() {
     }
 
     companion object {
-        fun startActivity(context: Context, startActivityInfo: NovelInfo) {
+        fun startActivity(context: Context, startActivityInfo: WebsiteNovelInfo) {
             val intent = Intent(context, NovelHomeActivity::class.java)
             intent.putExtra(EXTRA_NOVEL_INFO, startActivityInfo)
             context.startActivity(intent)

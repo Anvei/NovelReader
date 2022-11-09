@@ -1,118 +1,98 @@
-package org.anvei.novelreader.novel.parser;
+package org.anvei.novelreader.novel.parser
 
-import org.anvei.novelreader.model.Chapter;
-import org.anvei.novelreader.model.ChapterInfo;
-import org.anvei.novelreader.model.Novel;
-import org.anvei.novelreader.model.NovelInfo;
-import org.anvei.novelreader.novel.WebsiteIdentifier;
-import org.anvei.novelreader.novel.WebsiteNovelParser;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.anvei.novelreader.beans.Chapter
+import org.anvei.novelreader.beans.WebsiteChapterInfo
+import org.anvei.novelreader.beans.WebsiteNovelInfo
+import org.anvei.novelreader.novel.WebsiteIdentifier
+import org.anvei.novelreader.novel.WebsiteNovelParser
+import org.jsoup.Jsoup
+import java.io.IOException
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-public class W147xsParser extends WebsiteNovelParser {
-
-    private static final String homeUrl = "https://www.147xs.org";
-
-    private static final String searchApi = "https://www.147xs.org/search.php";
-
-    private static final String SELECT_NOVEL_LIST = "#bookcase_list > tr";
-
-    private static final String SELECT_CHAPTER_LIST = "#list > dl > dd > a";
-
-    private static final String SELECT_CHAPTER_CONTENT = "#content > p";
-
-    public W147xsParser() {
+class W147xsParser : WebsiteNovelParser() {
+    override fun getWebsiteIdentifier(): WebsiteIdentifier {
+        return WebsiteIdentifier.W147XS
     }
 
-    @Override
-    public WebsiteIdentifier getWebsiteIdentifier() {
-        return WebsiteIdentifier.W147XS;
-    }
-
-    @Override
-    public List<NovelInfo> search(String keyWord) {
-        List<NovelInfo> novelInfoList = new ArrayList<>();
+    override fun search(keyWord: String): List<WebsiteNovelInfo> {
+        val novelInfoList: MutableList<WebsiteNovelInfo> = ArrayList()
         try {
-            Document document = Jsoup.connect(searchApi)
-                    .header(REQUEST_HEAD_KEY, REQUEST_HEAD_VALUE)
-                    .timeout(getTimeOut())
-                    .data("keyword", keyWord)
-                    .post();
-            Elements elements = document.select(SELECT_NOVEL_LIST);
-            for (Element element : elements) {
-                String novelUrl = element.select("td:nth-child(2) > a").attr("href");
-                String novelName = element.select("td:nth-child(2) > a").text();
-                String author = element.select("td:nth-child(4)").text();
-                NovelInfo novelInfo = new NovelInfo(new Novel(novelName, author), getWebsiteIdentifier());
-                novelInfo.setUrl(novelUrl);
-                novelInfoList.add(novelInfo);
+            val document = Jsoup.connect(searchApi)
+                .header(REQUEST_HEAD_KEY, REQUEST_HEAD_VALUE)
+                .timeout(timeOut)
+                .data("keyword", keyWord)
+                .post()
+            val elements = document.select(SELECT_NOVEL_LIST)
+            for (element in elements) {
+                val novelUrl = element.select("td:nth-child(2) > a").attr("href")
+                val novelName = element.select("td:nth-child(2) > a").text()
+                val author = element.select("td:nth-child(4)").text()
+                val novelInfo = WebsiteNovelInfo(websiteIdentifier, novelName, WebsiteNovelInfo.Status.UNKNOWN)
+                novelInfo.apply {
+                    this.novelUrl = novelUrl
+                    this.author = author
+                }
+                novelInfoList.add(novelInfo)
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-        return getFilter() == null ? novelInfoList : getFilter().filter(novelInfoList);
+        return if (filter == null) novelInfoList else filter.filter(novelInfoList)
     }
 
-    @Override
-    public List<NovelInfo> searchByAuthor(String author) {
-        return search(author);
+    override fun searchByAuthor(author: String): List<WebsiteNovelInfo> {
+        return search(author)
     }
 
-    @Override
-    public List<NovelInfo> searchByNovelName(String name) {
-        return search(name);
+    override fun searchByNovelName(name: String): List<WebsiteNovelInfo> {
+        return search(name)
     }
 
-    @Override
-    public List<ChapterInfo> loadNovel(NovelInfo novelInfo) {
-        return loadNovel(novelInfo.getUrl());
+    override fun loadNovel(novelInfo: WebsiteNovelInfo): List<WebsiteChapterInfo> {
+        return loadNovel(novelInfo.novelUrl!!)
     }
 
-    @Override
-    public List<ChapterInfo> loadNovel(String novelUrl) {
-        List<ChapterInfo> chapterInfoList = new ArrayList<>();
+    override fun loadNovel(novelUrl: String): List<WebsiteChapterInfo> {
+        val chapterInfoList: MutableList<WebsiteChapterInfo> = ArrayList()
         try {
-            Document document = getDocument(novelUrl);
-            Elements elements = document.select(SELECT_CHAPTER_LIST);
-            for (Element element : elements) {
-                String chapterName = element.text();
-                String chapterUrl = homeUrl + element.attr("href");
-                ChapterInfo chapterInfo = new ChapterInfo(new Chapter(chapterName), chapterInfoList.size() + 1);
-                chapterInfo.setUrl(chapterUrl);
-                chapterInfoList.add(chapterInfo);
+            val document = getDocument(novelUrl)
+            val elements = document.select(SELECT_CHAPTER_LIST)
+            for (element in elements) {
+                val chapterName = element.text()
+                val chapterUrl = homeUrl + element.attr("href")
+                val chapterInfo = WebsiteChapterInfo(chapterName)
+                chapterInfo.chapterUrl = chapterUrl
+                chapterInfoList.add(chapterInfo)
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-        return chapterInfoList;
+        return chapterInfoList
     }
 
-    @Override
-    public Chapter loadChapter(ChapterInfo chapterInfo) {
-        StringBuilder stringBuilder = new StringBuilder();
+    override fun loadChapter(chapterInfo: WebsiteChapterInfo): Chapter {
+        val stringBuilder = StringBuilder()
         try {
-            Document document = getDocument(chapterInfo.getUrl());
-            Elements paras = document.select(SELECT_CHAPTER_CONTENT);      // 获取<p></p>标签
-            for (Element para : paras) {
-                String paraText = para.text().trim();
+            val document = getDocument(chapterInfo.chapterUrl!!)
+            val paras = document.select(SELECT_CHAPTER_CONTENT) // 获取<p></p>标签
+            for (para in paras) {
+                val paraText = para.text().trim { it <= ' ' }
                 if (!paraText.startsWith("【")) {      // 过滤网站的垃圾信息
                     stringBuilder.append(PARA_PREFIX)
-                            .append(para.text().trim())
-                            .append(PARA_SUFFIX);
+                        .append(para.text().trim { it <= ' ' })
+                        .append(PARA_SUFFIX)
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-        Chapter chapter = chapterInfo.getChapter();
-        chapter.setContent(stringBuilder.toString());
-        return chapter;
+        return Chapter(chapterInfo.chapterName, stringBuilder.toString())
     }
 
+    companion object {
+        private const val homeUrl = "https://www.147xs.org"
+        private const val searchApi = "https://www.147xs.org/search.php"
+        private const val SELECT_NOVEL_LIST = "#bookcase_list > tr"
+        private const val SELECT_CHAPTER_LIST = "#list > dl > dd > a"
+        private const val SELECT_CHAPTER_CONTENT = "#content > p"
+    }
 }

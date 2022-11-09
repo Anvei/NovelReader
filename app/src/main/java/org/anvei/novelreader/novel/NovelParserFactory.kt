@@ -1,50 +1,46 @@
-package org.anvei.novelreader.novel;
+package org.anvei.novelreader.novel
 
-import androidx.annotation.Nullable;
+import java.util.*
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+/* 为了降低耦合度，采用了反射机制进行加载NovelParser */
+object NovelParserFactory {
+    private const val defaultLoadPath = "org.anvei.novelreader.novel.parser"
 
-// 为了降低耦合度，采用了反射机制进行加载NovelParser
-public final class NovelParserFactory {
-
-    private static final String defaultLoadPath = "org.anvei.novelreader.novel.parser";
-
-    private static String getParserForFieldName(String fieldName) {
-        return fieldName.charAt(0) +
-                fieldName.substring(1).toLowerCase() +
-                "Parser";
+    private fun getParserForFieldName(fieldName: String): String {
+        return fieldName[0].toString() +
+                fieldName.substring(1).lowercase(Locale.getDefault()) +
+                "Parser"
     }
 
-    private static @Nullable WebsiteNovelParser getParser(String identifierName) {
-        WebsiteNovelParser res = null;
-        String parserName = getParserForFieldName(identifierName);
+    private fun getParser(identifierName: String): WebsiteNovelParser? {
+        var res: WebsiteNovelParser? = null
+        val parserName = getParserForFieldName(identifierName)
         try {
-            res = (WebsiteNovelParser) Class.forName(defaultLoadPath + "." + parserName).newInstance();
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+            res = Class.forName("$defaultLoadPath.$parserName")
+                .newInstance() as WebsiteNovelParser
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        return res;
+        return res
     }
 
-    public static WebsiteNovelParser getParser(WebsiteIdentifier identifier) {
-        return getParser(identifier.name());
+    fun getParser(identifier: WebsiteIdentifier): WebsiteNovelParser {
+        return getParser(identifier.name)!!
     }
 
-    public static List<WebsiteNovelParser> getWebsiteNovelParsers() {
-        List<WebsiteNovelParser> parsers = new ArrayList<>();
-        Class<WebsiteIdentifier> clazz = WebsiteIdentifier.class;
-        Field[] fields = clazz.getFields();
-        for (Field field : fields) {
-            if (!field.getName().equals("UNKNOWN")) {
-                WebsiteNovelParser parser = getParser(field.getName());
-                if (parser != null) {
-                    parsers.add(parser);
+    val websiteNovelParsers: List<WebsiteNovelParser>
+        get() {
+            val parsers: MutableList<WebsiteNovelParser> = ArrayList()
+            val clazz = WebsiteIdentifier::class.java
+            val fields = clazz.fields
+            for (field in fields) {
+                if (field.name != "UNKNOWN") {
+                    val parser = getParser(field.name)
+                    if (parser != null) {
+                        parsers.add(parser)
+                    }
                 }
             }
+            return parsers
         }
-        return parsers;
-    }
-
 }

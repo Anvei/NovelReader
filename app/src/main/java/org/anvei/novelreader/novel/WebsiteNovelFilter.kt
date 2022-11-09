@@ -1,11 +1,7 @@
-package org.anvei.novelreader.novel;
+package org.anvei.novelreader.novel
 
-import org.anvei.novelreader.model.NovelInfo;
+import org.anvei.novelreader.beans.WebsiteNovelInfo
 
-import java.util.List;
-
-public interface NovelSearchFilter {
-
-    List<NovelInfo> filter(List<NovelInfo> novelInfoList);
-
+interface WebsiteNovelFilter {
+    fun filter(novelInfoList: List<WebsiteNovelInfo>): List<WebsiteNovelInfo>
 }

@@ -4,111 +4,144 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/readPageDrawer"
+    android:id="@+id/read_page_drawer"
     android:fitsSystemWindows="false">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/readPage"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/read_page_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ScrollView
+            android:id="@+id/chapter_content_scroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_marginHorizontal="10dp"
-                android:id="@+id/chapterContentRecycler"
+                android:id="@+id/chapter_content_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
         </ScrollView>
 
         <LinearLayout
-            android:id="@+id/chapterSettingView"
+            android:id="@+id/chapter_setting"
             android:layout_width="match_parent"
             android:layout_height="135dp"
-            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:orientation="vertical"
             android:visibility="gone"
             android:background="@color/white"
             tools:visibility="visible">
-            <RelativeLayout
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp">
                 <ImageButton
-                    android:id="@+id/lastChapter"
+                    android:id="@+id/last_chapter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:src="@drawable/ic_arrow_left"
                     android:backgroundTint="@color/translucent"
                     android:contentDescription="切换上一章" />
+
+                <SeekBar
+                    android:id="@+id/chapter_seekbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:layout_constraintLeft_toRightOf="@id/last_chapter"
+                    app:layout_constraintRight_toLeftOf="@id/next_chapter"
+                    app:layout_constraintBaseline_toBaselineOf="@id/last_chapter"
+                    android:layout_alignStart="@id/last_chapter"
+                    android:layout_alignEnd="@id/next_chapter" />
+
                 <ImageButton
-                    android:id="@+id/nextChapter"
+                    android:id="@+id/next_chapter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_arrow_right"
                     android:backgroundTint="@color/translucent"
                     android:contentDescription="切换下一章" />
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <LinearLayout
+                android:id="@+id/chapterPageSettingLiner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
                 <Button
-                    android:id="@+id/chapterListDisplay"
+                    android:id="@+id/chapter_list_display_btn"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:drawableTop="@drawable/ic_chapter_content"
-                    android:backgroundTint="@color/chapter_page_floating_view"
                     android:text="目录"
-                    android:stateListAnimator="@null"/>
+                    style="?android:attr/buttonBarButtonStyle" />
                 <Button
-                    android:id="@+id/chapterPageNovelHome"
+                    android:id="@+id/chapter_page_novel_home_btn"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:backgroundTint="@color/chapter_page_floating_view"
                     android:drawableTop="@drawable/ic_read_page_novel_home"
                     android:text="详情"
-                    android:stateListAnimator="@null"/>
+                    style="?android:attr/buttonBarButtonStyle" />
                 <Button
-                    android:id="@+id/temp1"
+                    android:id="@+id/hv_trans_btn"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:backgroundTint="@color/chapter_page_floating_view"
                     android:drawableTop="@drawable/ic_read_page_translation"
                     android:text="切换横屏"
-                    android:stateListAnimator="@null"/>
-
+                    style="?android:attr/buttonBarButtonStyle" />
                 <Button
-                    android:id="@+id/chapterPageSetting"
+                    android:id="@+id/chapter_font_setting_btn"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:backgroundTint="@color/chapter_page_floating_view"
                     android:drawableTop="@drawable/ic_font_setting"
                     android:text="设置"
-                    android:stateListAnimator="@null"/>
+                    style="?android:attr/buttonBarButtonStyle" />
             </LinearLayout>
         </LinearLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/readNavigation"
+    <LinearLayout
+        android:id="@+id/read_page_side"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/navigation_head" />
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/read_page_novel_title"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginHorizontal="15dp"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:maxLines="1"
+            android:textColor="@color/text_color"
+            android:layout_marginBottom="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chapter_list_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

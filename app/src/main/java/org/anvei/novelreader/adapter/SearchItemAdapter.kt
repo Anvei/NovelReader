@@ -9,9 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.R
 import org.anvei.novelreader.activity.NovelHomeActivity
-import org.anvei.novelreader.model.NovelInfo
+import org.anvei.novelreader.beans.WebsiteNovelInfo
 
-class SearchItemAdapter(private val list: List<NovelInfo>, private val context: Context)
+class SearchItemAdapter(private val list: List<WebsiteNovelInfo>, private val context: Context)
     : RecyclerView.Adapter<SearchItemAdapter.Holder>() {
 
     class Holder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -28,9 +28,9 @@ class SearchItemAdapter(private val list: List<NovelInfo>, private val context: 
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val novelInfo = list[position]
-        holder.novel.text = novelInfo.novel.name
-        holder.author.text = novelInfo.novel.author + " - [${novelInfo.identifier.name}]"
-        holder.brief.text = novelInfo.introduction
+        holder.novel.text = novelInfo.novelName
+        holder.author.text = novelInfo.author + " - [${novelInfo.identifier.name}]"
+        holder.brief.text = novelInfo.intro
 
         holder.view.setOnClickListener{
             // 启动小说主页界面

@@ -1,6 +1,5 @@
 package org.anvei.novelreader.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +7,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.R
 import org.anvei.novelreader.activity.ReadPageActivity
-import org.anvei.novelreader.model.ChapterInfo
+import org.anvei.novelreader.beans.WebsiteChapterInfo
 import org.anvei.novelreader.novel.WebsiteNovelParser
 
-class ChapterContentAdapter(private val list: List<ChapterInfo>, private val activity: ReadPageActivity,
-    private val novelParser: WebsiteNovelParser) : RecyclerView.Adapter<ChapterContentAdapter.Holder>() {
+class ChapterContentAdapter(private val list: List<WebsiteChapterInfo>, private val activity: ReadPageActivity,
+                            private val novelParser: WebsiteNovelParser
+) : RecyclerView.Adapter<ChapterContentAdapter.Holder>() {
 
     class Holder(val view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.readChapterTitle)
@@ -26,17 +26,15 @@ class ChapterContentAdapter(private val list: List<ChapterInfo>, private val act
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val chapterInfo = list[position]
-        activity.setCurrentIndex(chapterInfo.index)
-        holder.title.text = chapterInfo.chapter.name
+        holder.title.text = chapterInfo.chapterName
         Thread {
             val chapter = novelParser.loadChapter(chapterInfo)
             activity.runOnUiThread {
-                holder.content.text = chapter.content
+                holder.content.text = chapter.chapterContent
             }
-            Log.d("Anvei", "${chapterInfo.index}")
         }.start()
         holder.content.setOnClickListener {
-            activity.onSettingViewClick()
+            activity.onSettingView()
         }
     }
 

@@ -1,6 +1,6 @@
 package org.anvei.novelreader.novel;
 
-import org.anvei.novelreader.model.Novel;
+import org.anvei.novelreader.beans.Novel;
 
 public interface NativeNovelInfoResolver {
 

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.R
 import org.anvei.novelreader.adapter.SearchItemAdapter
-import org.anvei.novelreader.model.NovelInfo
+import org.anvei.novelreader.beans.WebsiteNovelInfo
 import org.anvei.novelreader.novel.NovelParserFactory
 import org.anvei.novelreader.novel.WebsiteNovelParser
 
@@ -22,9 +22,9 @@ class NovelListActivity : BaseActivity() {
         novelRecycler = findViewById(R.id.searchResultList)
 
         val keyword = intent.getStringExtra(EXTRA_SEARCH_KEYWORD)
-        novelParsers = NovelParserFactory.getWebsiteNovelParsers()
+        novelParsers = NovelParserFactory.websiteNovelParsers
 
-        val novelList = ArrayList<NovelInfo>()
+        val novelList = ArrayList<WebsiteNovelInfo>()
         val adapter = SearchItemAdapter(novelList, this)
 
         novelRecycler.adapter = adapter

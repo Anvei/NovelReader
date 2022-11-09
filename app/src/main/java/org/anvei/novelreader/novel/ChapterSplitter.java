@@ -1,6 +1,6 @@
 package org.anvei.novelreader.novel;
 
-import org.anvei.novelreader.model.Chapter;
+import org.anvei.novelreader.beans.Chapter;
 
 import java.util.Enumeration;
 

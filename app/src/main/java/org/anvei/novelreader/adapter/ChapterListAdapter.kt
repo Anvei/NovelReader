@@ -7,10 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.R
 import org.anvei.novelreader.activity.ReadPageActivity
-import org.anvei.novelreader.model.ChapterInfo
+import org.anvei.novelreader.beans.WebsiteChapterInfo
 
-class ChapterItemAdapter(private val list: List<ChapterInfo>, private val activity: ReadPageActivity) :
-    RecyclerView.Adapter<ChapterItemAdapter.Holder>() {
+class ChapterListAdapter(private val list: List<WebsiteChapterInfo>, private val activity: ReadPageActivity) :
+    RecyclerView.Adapter<ChapterListAdapter.Holder>() {
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.chapterListItem)
@@ -24,9 +24,9 @@ class ChapterItemAdapter(private val list: List<ChapterInfo>, private val activi
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val chapterInfo = list[position]
-        holder.textView.text = chapterInfo.chapter.name
+        holder.textView.text = chapterInfo.chapterName
         holder.textView.setOnClickListener {
-            activity.setCurrentChapter(chapterInfo)
+            activity.onCurrentChapter(position)
         }
     }
 

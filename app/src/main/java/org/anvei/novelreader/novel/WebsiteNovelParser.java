@@ -20,12 +20,12 @@ public abstract class WebsiteNovelParser implements WebsiteParsable {
 
     private int timeOut = 10000;
 
-    private NovelSearchFilter filter;
+    private WebsiteNovelFilter filter;
 
     protected WebsiteNovelParser() {
     }
 
-    protected WebsiteNovelParser(NovelSearchFilter filter) {
+    protected WebsiteNovelParser(WebsiteNovelFilter filter) {
         this.filter = filter;
     }
 
@@ -38,12 +38,12 @@ public abstract class WebsiteNovelParser implements WebsiteParsable {
         return timeOut;
     }
 
-    public WebsiteNovelParser setFilter(NovelSearchFilter filter) {
+    public WebsiteNovelParser setFilter(WebsiteNovelFilter filter) {
         this.filter = filter;
         return this;
     }
 
-    public NovelSearchFilter getFilter() {
+    public WebsiteNovelFilter getFilter() {
         return filter;
     }
 

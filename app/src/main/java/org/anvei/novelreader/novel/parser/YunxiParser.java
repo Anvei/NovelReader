@@ -1,8 +1,8 @@
 package org.anvei.novelreader.novel.parser;
 
-import org.anvei.novelreader.model.Chapter;
-import org.anvei.novelreader.model.ChapterInfo;
-import org.anvei.novelreader.model.NovelInfo;
+import org.anvei.novelreader.beans.Chapter;
+import org.anvei.novelreader.beans.WebsiteChapterInfo;
+import org.anvei.novelreader.beans.WebsiteNovelInfo;
 import org.anvei.novelreader.novel.WebsiteIdentifier;
 import org.anvei.novelreader.novel.WebsiteNovelParser;
 
@@ -20,32 +20,32 @@ public class YunxiParser extends WebsiteNovelParser {
     }
 
     @Override
-    public List<NovelInfo> search(String keyWord) {
+    public List<WebsiteNovelInfo> search(String keyWord) {
         return null;
     }
 
     @Override
-    public List<NovelInfo> searchByAuthor(String author) {
+    public List<WebsiteNovelInfo> searchByAuthor(String author) {
         return null;
     }
 
     @Override
-    public List<NovelInfo> searchByNovelName(String name) {
+    public List<WebsiteNovelInfo> searchByNovelName(String name) {
         return null;
     }
 
     @Override
-    public List<ChapterInfo> loadNovel(NovelInfo novelInfo) {
+    public List<WebsiteChapterInfo> loadNovel(WebsiteNovelInfo novelInfo) {
         return null;
     }
 
     @Override
-    public List<ChapterInfo> loadNovel(String novelUrl) {
+    public List<WebsiteChapterInfo> loadNovel(String novelUrl) {
         return null;
     }
 
     @Override
-    public Chapter loadChapter(ChapterInfo chapterInfo) {
+    public Chapter loadChapter(WebsiteChapterInfo chapterInfo) {
         return null;
     }
 }
