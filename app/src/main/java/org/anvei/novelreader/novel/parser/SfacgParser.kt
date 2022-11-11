@@ -61,12 +61,12 @@ class SfacgParser : WebsiteNovelParser() {
             for (ul in uls) {
                 val lis = ul.getElementsByTag("li")
                 if (lis.size == 2) {
-                    val coverUrl = "https:" + lis[0].attr("src")
-                    val novelName = lis[0].attr("alt")
+                    val coverUrl = "https:" + lis[0].select("img").attr("src")
+                    val novelName = lis[0].select("img").attr("alt")
                     val novelUrl = lis[1].select("strong > a").attr("href")
                     val tempTexts = lis[1].text().split(" ", limit = 5)
 
-                    val novelInfo = WebsiteNovelInfo(websiteIdentifier, novelName, WebsiteNovelInfo.Status.UNKNOWN)
+                    val novelInfo = WebsiteNovelInfo(websiteIdentifier, novelName)
 
                     novelInfo.apply {
                         this.novelUrl = novelUrl

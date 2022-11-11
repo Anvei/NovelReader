@@ -1,7 +1,6 @@
 package org.anvei.novelreader.activity
 
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -16,12 +15,10 @@ import androidx.viewpager.widget.ViewPager
 import org.anvei.novelreader.R
 import org.anvei.novelreader.adapter.BookShelfAdapter
 import org.anvei.novelreader.adapter.MainPagerAdapter
-import org.anvei.novelreader.disk.BookShelfHelper
 import org.anvei.novelreader.beans.WebsiteNovelInfo
+import org.anvei.novelreader.interfaces.view.IBookShelfView
 
-class MainActivity : BaseActivity() {
-
-    private lateinit var dataBase: SQLiteDatabase       // 数据库
+class MainActivity : BaseActivity(), IBookShelfView {
 
     private lateinit var viewPager: ViewPager           // 主页的ViewPager
     private lateinit var mainBookShelf: View
@@ -43,27 +40,34 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initActivity()
+        initComponent()
     }
 
-    private fun initActivity() {
-        initDatabase()
+    // 在显示在前台可见时重新加载数据
+    override fun onStart() {
+        super.onStart()
         initBookShelfItemList()
-        initComponent()
+    }
+
+    // 一离开前台可见就清空数据
+    override fun onStop() {
+        super.onStop()
+        bookShelfItemList.clear()
     }
 
     /**
      * 对书架上的小说进行初始化
      */
     private fun initBookShelfItemList() {
-        bookShelfItemList.addAll(BookShelfHelper.queryAllBook(this))
-    }
-
-    /**
-     * 初始化数据库
-     */
-    private fun initDatabase() {
-        dataBase = BookShelfHelper(this, DATABASE_NAME, null, 1).writableDatabase
+        Thread {
+            val list = appDatabase.websiteNovelDao.queryAllNovel()
+            list.forEach {
+                bookShelfItemList.add(it.websiteNovelInfo!!)
+            }
+            runOnUiThread {
+                bookShelfItemAdapter.notifyItemRangeChanged(0, bookShelfItemList.size)
+            }
+        }.start()
     }
 
     /**
@@ -141,5 +145,11 @@ class MainActivity : BaseActivity() {
             val intent = Intent(this, SearchActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun deleteNovel(index: Int) {
+        bookShelfItemList.removeAt(index)
+        bookShelfItemAdapter.notifyItemRemoved(index)   // 同步数据
+        bookShelfItemAdapter.notifyItemRangeChanged(index, bookShelfItemList.size - index)
     }
 }

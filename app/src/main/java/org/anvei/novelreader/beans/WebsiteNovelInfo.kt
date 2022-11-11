@@ -6,17 +6,13 @@ import java.io.Serializable
 
 class WebsiteNovelInfo(
     val identifier: WebsiteIdentifier,
-    val novelName: String, val novelStatus: Status
+    val novelName: String
 ) : Serializable {
     var author : String? = null
     var novelUrl : String? = null
     var coverUrl : String? = null
     var intro : String? = null
     private val chapterInfoList: MutableList<WebsiteChapterInfo> = ArrayList()
-
-    enum class Status {
-        UNKNOWN, UPDATING, FINISHED
-    }
 
     fun add(chapterInfo: WebsiteChapterInfo) {
         chapterInfoList.add(chapterInfo)

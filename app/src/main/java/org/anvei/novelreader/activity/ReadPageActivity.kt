@@ -3,13 +3,12 @@ package org.anvei.novelreader.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.anvei.novelreader.activity.interfaces.IReadPage
+import org.anvei.novelreader.interfaces.view.IReadPageView
 import org.anvei.novelreader.adapter.ChapterContentAdapter
 import org.anvei.novelreader.adapter.ChapterListAdapter
 import org.anvei.novelreader.beans.WebsiteChapterInfo
@@ -19,7 +18,7 @@ import org.anvei.novelreader.novel.NovelParserFactory
 import org.anvei.novelreader.novel.WebsiteNovelParser
 import org.anvei.novelreader.viewmodel.ReadPageActivityModel
 
-class ReadPageActivity : BaseActivity(), IReadPage {
+class ReadPageActivity : BaseActivity(), IReadPageView {
 
     companion object {
         /* 用来启动ReadPageActivity */
@@ -44,7 +43,7 @@ class ReadPageActivity : BaseActivity(), IReadPage {
     private var currentChapterIndex: Int = 0
 
     /**
-     * 初始化小说基本信息、章节信息、小说解析器
+     * 初始化小说基本信息、小说解析器
      */
     private fun initNovelConfig() {
         novelInfo = intent.getSerializableExtra(EXTRA_NOVEL_INFO) as WebsiteNovelInfo
@@ -117,7 +116,6 @@ class ReadPageActivity : BaseActivity(), IReadPage {
     }
 
     override fun onSettingView() {
-        Log.d("Anvei", viewBinding.chapterSetting.visibility.toString())
         if (viewBinding.chapterSetting.visibility == View.GONE) {
             viewBinding.chapterSetting.visibility = View.VISIBLE
         } else {
@@ -134,8 +132,19 @@ class ReadPageActivity : BaseActivity(), IReadPage {
         onSettingView()
     }
 
-    override fun onCurrentChapter(currentIndex: Int) {
-        currentChapterIndex = currentIndex
+    override fun onCurrentChapter() {
         viewBinding.chapterContentRecycler.scrollToPosition(currentChapterIndex)
+    }
+
+    override fun onCurrentIndex(currentIndex: Int) {
+        currentChapterIndex = currentIndex
+    }
+
+    override fun onProgressBar(flag: Boolean) {
+        viewBinding.chapterContentProgress.visibility = if (flag) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 }

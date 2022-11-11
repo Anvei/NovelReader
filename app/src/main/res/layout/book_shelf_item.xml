@@ -1,65 +1,76 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="5dp"
-    android:layout_margin="3dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="5dp">
+
+    <ImageView
+        android:id="@+id/bsi_cover"
+        android:layout_width="80dp"
+        android:layout_height="110dp"
+        android:contentDescription="书架上的小说的封面"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical"
+        android:paddingVertical="8dp"
+        app:layout_constraintEnd_toStartOf="@id/bsi_icon_linear"
+        app:layout_constraintStart_toEndOf="@+id/bsi_cover"
+        tools:layout_editor_absoluteY="5dp">
 
-        <ImageView
-            android:id="@+id/bookShelfItemCover"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:contentDescription="书架上的小说的封面" />
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/bsi_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:maxLines="1"
+            android:textColor="@color/text_color"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/bookShelfItemName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginVertical="5dp"
-                android:maxLines="1"/>
+        <TextView
+            android:id="@+id/bsi_last_read_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxLines="1"
+            android:textColor="@color/text_color_2"
+            android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/bookShelfItemAuthor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:maxLines="1"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/bookShelfItemNewestChapter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
-                    android:textSize="15sp"
-                    android:maxLines="1"/>
-                <ImageButton
-                    android:id="@+id/bookShelfItemDelete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:backgroundTint="@color/white"
-                    android:src="@drawable/ic_baseline_delete_24"/>
-            </LinearLayout>
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/bsi_last_chapter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:maxLines="1"
+            android:textColor="@color/text_color_2"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+    <LinearLayout
+        android:id="@+id/bsi_icon_linear"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/bsi_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="3dp"
+            android:src="@drawable/ic_book_shelf_item_menu"
+            android:background="@color/white"
+            android:contentDescription="书架上小说管理按钮" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

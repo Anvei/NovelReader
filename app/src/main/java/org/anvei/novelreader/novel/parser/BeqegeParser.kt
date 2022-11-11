@@ -26,7 +26,7 @@ class BeqegeParser : WebsiteNovelParser() {
                 val novelUrl = div.select("span.s2 > a").attr("href")
                 val novelName = div.select("span.s2 > a").text()
                 val author = div.select("span.s4").text()
-                val novelInfo = WebsiteNovelInfo(websiteIdentifier, novelName, WebsiteNovelInfo.Status.UNKNOWN)
+                val novelInfo = WebsiteNovelInfo(websiteIdentifier, novelName)
                 novelInfo.apply {
                     this.author = author
                     this.novelUrl = novelUrl

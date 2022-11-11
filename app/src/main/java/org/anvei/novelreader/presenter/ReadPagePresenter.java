@@ -1,12 +1,12 @@
 package org.anvei.novelreader.presenter;
 
-import org.anvei.novelreader.activity.interfaces.IReadPage;
+import org.anvei.novelreader.interfaces.view.IReadPageView;
 
 public class ReadPagePresenter {
 
-    private IReadPage readPage;
+    private IReadPageView readPage;
 
-    public ReadPagePresenter(IReadPage readPage) {
+    public ReadPagePresenter(IReadPageView readPage) {
         this.readPage = readPage;
     }
 

@@ -13,6 +13,7 @@
     <color name="main_icon_stroke">#000000</color>
 
     <color name="text_color">#000000</color>
+    <color name="text_color_2">#575757</color>
     <color name="chapter_list_item_clicked_text_color">#FF4E4E</color>
 
     <!--阅读界面章节内容与章节的标题的分割线的颜色-->

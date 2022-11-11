@@ -27,13 +27,15 @@ class ChapterContentAdapter(private val list: List<WebsiteChapterInfo>, private 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val chapterInfo = list[position]
         holder.title.text = chapterInfo.chapterName
+        // activity.onProgressBar(true)        // 显示ProgressBar
         Thread {
             val chapter = novelParser.loadChapter(chapterInfo)
             activity.runOnUiThread {
+                // activity.onProgressBar(false)
                 holder.content.text = chapter.chapterContent
             }
         }.start()
-        holder.content.setOnClickListener {
+        holder.view.setOnClickListener {
             activity.onSettingView()
         }
     }

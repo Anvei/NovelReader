@@ -6,7 +6,6 @@ import java.io.Serializable
 class Chapter : Serializable {
     val chapterName: String
     var chapterContent: String? = null
-    var chapterIndex: Int = 0
 
     constructor(chapterName: String) {
         this.chapterName = chapterName

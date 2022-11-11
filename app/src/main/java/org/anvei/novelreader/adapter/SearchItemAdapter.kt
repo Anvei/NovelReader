@@ -29,7 +29,7 @@ class SearchItemAdapter(private val list: List<WebsiteNovelInfo>, private val co
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val novelInfo = list[position]
         holder.novel.text = novelInfo.novelName
-        holder.author.text = novelInfo.author + " - [${novelInfo.identifier.name}]"
+        holder.author.text = "${novelInfo.author} - [${novelInfo.identifier.name}]"
         holder.brief.text = novelInfo.intro
 
         holder.view.setOnClickListener{

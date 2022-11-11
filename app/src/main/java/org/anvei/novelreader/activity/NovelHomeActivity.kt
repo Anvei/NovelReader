@@ -1,10 +1,8 @@
 package org.anvei.novelreader.activity
 
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -12,7 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import org.anvei.novelreader.R
-import org.anvei.novelreader.disk.BookShelfHelper
+import org.anvei.novelreader.beans.WebsiteNovel
 import org.anvei.novelreader.beans.WebsiteNovelInfo
 import org.anvei.novelreader.novel.NovelParserFactory
 import org.anvei.novelreader.novel.WebsiteNovelParser
@@ -23,8 +21,6 @@ class NovelHomeActivity : BaseActivity() {
     private lateinit var novelInfo: WebsiteNovelInfo
 
     private lateinit var novelParser: WebsiteNovelParser
-
-    private lateinit var database: SQLiteDatabase
 
     private lateinit var novelTitleView: TextView
 
@@ -42,8 +38,6 @@ class NovelHomeActivity : BaseActivity() {
         novelInfo = intent.getSerializableExtra(EXTRA_NOVEL_INFO) as WebsiteNovelInfo
         novelParser = NovelParserFactory.getParser(novelInfo.identifier)
 
-        database = BookShelfHelper(this, DATABASE_NAME, null, 1).writableDatabase
-
         initWidget()
     }
 
@@ -58,26 +52,24 @@ class NovelHomeActivity : BaseActivity() {
         novelTitleView.text = novelInfo.novelName
         novelAuthorView.text = novelInfo.author
 
-
         if (novelInfo.coverUrl != null) {
             Glide.with(this).load(novelInfo.coverUrl).into(novelCoverView)
         }
 
         likeButton.setOnClickListener {
-            val cursor = database.query(TABLE_BOOK_SHELF_ITEM, null, "website = ? and novel = ?",
-                arrayOf(novelInfo.identifier.name, novelInfo.novelName), null, null, null)
-            if (!cursor.moveToNext()) {
-                val contentValues = ContentValues()
-                contentValues.put("website", novelInfo.identifier.name)
-                contentValues.put("novel", novelInfo.novelName)
-                contentValues.put("author", novelInfo.author)
-                contentValues.put("url", novelInfo.novelUrl)
-                contentValues.put("pic_url", novelInfo.coverUrl)
-                database.insert(TABLE_BOOK_SHELF_ITEM, null, contentValues)
-            } else {
-                Toast.makeText(this, "已经在书架中！", Toast.LENGTH_SHORT).show()
-            }
-            cursor.close()
+            Thread {
+                if (appDatabase.websiteNovelDao.queryNovel(novelInfo.identifier.name,
+                    novelInfo.author, novelInfo.novelName) == null) {
+                    appDatabase.websiteNovelDao.addNovel(WebsiteNovel(novelInfo))
+                    runOnUiThread {
+                        Toast.makeText(this, "收藏成功!", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(this, "已经在书架中!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }.start()
         }
 
         readButton.setOnClickListener {

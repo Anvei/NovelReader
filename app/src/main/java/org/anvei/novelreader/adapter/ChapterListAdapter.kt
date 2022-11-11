@@ -26,7 +26,8 @@ class ChapterListAdapter(private val list: List<WebsiteChapterInfo>, private val
         val chapterInfo = list[position]
         holder.textView.text = chapterInfo.chapterName
         holder.textView.setOnClickListener {
-            activity.onCurrentChapter(position)
+            activity.onCurrentIndex(position)
+            activity.onCurrentChapter()
         }
     }
 

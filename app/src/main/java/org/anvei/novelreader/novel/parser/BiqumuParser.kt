@@ -36,7 +36,7 @@ class BiqumuParser : WebsiteNovelParser() {
                 val novelUrl = li.select("span.n2 > a").attr("href")
                 val name = li.select("span.n2 > a").text()
                 val author = li.select("span.n4").text()
-                val novelInfo = WebsiteNovelInfo( websiteIdentifier, name, WebsiteNovelInfo.Status.UNKNOWN)
+                val novelInfo = WebsiteNovelInfo(websiteIdentifier, name)
                 novelInfo.apply {
                     this.author = author
                     this.novelUrl = homeUrl + novelUrl

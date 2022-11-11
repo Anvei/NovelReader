@@ -26,7 +26,7 @@ class W147xsParser : WebsiteNovelParser() {
                 val novelUrl = element.select("td:nth-child(2) > a").attr("href")
                 val novelName = element.select("td:nth-child(2) > a").text()
                 val author = element.select("td:nth-child(4)").text()
-                val novelInfo = WebsiteNovelInfo(websiteIdentifier, novelName, WebsiteNovelInfo.Status.UNKNOWN)
+                val novelInfo = WebsiteNovelInfo(websiteIdentifier, novelName)
                 novelInfo.apply {
                     this.novelUrl = novelUrl
                     this.author = author
