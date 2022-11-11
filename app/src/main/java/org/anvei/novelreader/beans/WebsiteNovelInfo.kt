@@ -18,7 +18,7 @@ class WebsiteNovelInfo(
         chapterInfoList.add(chapterInfo)
     }
 
-    fun getChapterInfo(@IntRange(from = 1) index: Int): WebsiteChapterInfo? {
-        return if (index > chapterInfoList.size) null else chapterInfoList[index - 1]
+    fun getChapterInfo(@IntRange(from = 1) index: Int): WebsiteChapterInfo {
+        return chapterInfoList[index - 1]
     }
 }

@@ -3,17 +3,19 @@ package org.anvei.novelreader.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.anvei.novelreader.interfaces.view.IReadPageView
+import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.adapter.ChapterContentAdapter
 import org.anvei.novelreader.adapter.ChapterListAdapter
 import org.anvei.novelreader.beans.WebsiteChapterInfo
 import org.anvei.novelreader.beans.WebsiteNovelInfo
 import org.anvei.novelreader.databinding.ActivityReadPageBinding
+import org.anvei.novelreader.interfaces.view.IReadPageView
 import org.anvei.novelreader.novel.NovelParserFactory
 import org.anvei.novelreader.novel.WebsiteNovelParser
 import org.anvei.novelreader.viewmodel.ReadPageActivityModel
@@ -61,6 +63,20 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
         viewBinding.chapterListRecycler.adapter = chapterListAdapter
         viewBinding.chapterListRecycler.layoutManager = LinearLayoutManager(this)
 
+        viewBinding.chapterContentRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val manager = recyclerView.layoutManager as LinearLayoutManager
+                val index = manager.findFirstVisibleItemPosition()
+                if (index != currentChapterIndex) {
+                    val temp = currentChapterIndex
+                    currentChapterIndex = index
+                    chapterListAdapter.notifyItemChanged(index)
+                    chapterListAdapter.notifyItemChanged(temp)
+                }
+            }
+        })
+
         viewBinding.readPageNovelTitle.text = novelInfo.novelName
         viewBinding.lastChapter.setOnClickListener {
             onLastChapter()
@@ -91,15 +107,25 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
             // 加载小说章节信息列表
             chapterInfoList.addAll(novelParser.loadNovel(novelInfo.novelUrl))
             runOnUiThread {
+                if (chapterInfoList.size == 0) {
+                    Toast.makeText(this, "该小说为空", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
                 chapterListAdapter.notifyItemRangeChanged(0, chapterInfoList.size)
                 chapterContentAdapter.notifyItemRangeChanged(0, chapterInfoList.size)
             }
         }.start()
     }
 
+    // 更新最后阅读时间
+    override fun onStop() {
+        super.onStop()
+        updateLastReadTime()
+    }
+
     override fun onNextChapter() {
         if (currentChapterIndex < chapterInfoList.size) {
-            currentChapterIndex++;
+            currentChapterIndex++
             viewBinding.chapterContentRecycler.scrollToPosition(currentChapterIndex)
         } else {
             Toast.makeText(this, "已经是最后一章!", Toast.LENGTH_SHORT).show()
@@ -108,7 +134,7 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
 
     override fun onLastChapter() {
         if (currentChapterIndex > 0) {
-            currentChapterIndex--;
+            currentChapterIndex--
             viewBinding.chapterContentRecycler.scrollToPosition(currentChapterIndex)
         } else {
             Toast.makeText(this, "已经是第一章!", Toast.LENGTH_SHORT).show()
@@ -128,16 +154,19 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
     }
 
     override fun onChapterListView(flag: Boolean) {
+        // 打开章节列表侧栏的同时需要让章节列表视图跳转到当前显示的章节
+        viewBinding.chapterListRecycler.scrollToPosition(currentChapterIndex)
         viewBinding.readPageDrawer.openDrawer(GravityCompat.START)
-        onSettingView()
+        onSettingView()         // 关闭章节设置面板
     }
 
-    override fun onCurrentChapter() {
-        viewBinding.chapterContentRecycler.scrollToPosition(currentChapterIndex)
+    override fun onCurrentChapter(index: Int) {
+        viewBinding.chapterContentRecycler.scrollToPosition(index)
+        viewBinding.chapterContentRecycler.smoothScrollToPosition(index)
     }
 
-    override fun onCurrentIndex(currentIndex: Int) {
-        currentChapterIndex = currentIndex
+    override fun getCurrentIndex(): Int {
+        return currentChapterIndex
     }
 
     override fun onProgressBar(flag: Boolean) {
@@ -146,5 +175,9 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
         } else {
             View.GONE
         }
+    }
+
+    override fun updateLastReadTime() {
+        // TODO("Not yet implemented")
     }
 }

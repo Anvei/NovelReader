@@ -10,6 +10,8 @@ public class BaseActivity extends AppCompatActivity {
 
     protected static final String EXTRA_NOVEL_INFO = "org.anvei.novel.info";
 
+    protected static final String EXTRA_NOVEL_POSITION = "org.anvei.novel.position";
+
     protected static final String EXTRA_SEARCH_KEYWORD = "org.anvei.search.keyword";
 
     @Override

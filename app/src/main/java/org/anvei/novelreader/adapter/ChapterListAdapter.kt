@@ -1,5 +1,7 @@
 package org.anvei.novelreader.adapter
 
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,9 +27,11 @@ class ChapterListAdapter(private val list: List<WebsiteChapterInfo>, private val
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val chapterInfo = list[position]
         holder.textView.text = chapterInfo.chapterName
+        if (position == activity.getCurrentIndex()) {
+            holder.textView.setTextColor(Color.RED)
+        }
         holder.textView.setOnClickListener {
-            activity.onCurrentIndex(position)
-            activity.onCurrentChapter()
+            activity.onCurrentChapter(position)
         }
     }
 
