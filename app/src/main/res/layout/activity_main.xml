@@ -1,58 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/light_grey_white">
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/mainViewPager"
+        android:id="@+id/mp_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/mainRadio" />
+        android:layout_above="@id/mp_radio_group" />
 
     <RadioGroup
-        android:id="@+id/mainRadio"
+        android:id="@+id/mp_radio_group"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginBottom="5dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="3dp"
+        android:paddingTop="10dp"
         android:gravity="center_vertical"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:weightSum="3">
 
         <RadioButton
-            android:id="@+id/mainBookShelf"
+            android:id="@+id/mp_radio_book_shelf"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
             android:gravity="center"
             android:checked="true"
-            android:drawableTop="@drawable/ic_main_book_shelf_radio"
+            android:drawableTop="@drawable/ic_mp_book_shelf_radio"
             android:text="书架"
-            android:textColor="@color/main_icon_stroke"/>
+            android:textSize="@dimen/mp_bottom_icon_text_size"
+            android:textColor="@color/mp_bottom_unchecked" />
 
         <RadioButton
-            android:id="@+id/mainSuggest"
+            android:id="@+id/mp_radio_find"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
             android:gravity="center"
             android:checked="false"
-            android:drawableTop="@drawable/ic_main_find_radio"
+            android:drawableTop="@drawable/ic_mp_find_radio"
             android:text="推荐"
-            android:textColor="@color/main_icon_stroke"/>
+            android:textSize="@dimen/mp_bottom_icon_text_size"
+            android:textColor="@color/mp_bottom_unchecked"/>
 
         <RadioButton
-            android:id="@+id/mainSetting"
+            android:id="@+id/mp_radio_setting"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
             android:gravity="center"
             android:checked="false"
-            android:drawableTop="@drawable/ic_main_setting_radio"
+            android:drawableTop="@drawable/ic_mp_setting_radio"
             android:text="设置"
-            android:textColor="@color/main_icon_stroke"/>
+            android:textSize="@dimen/mp_bottom_icon_text_size"
+            android:textColor="@color/mp_bottom_unchecked"/>
 
     </RadioGroup>
 

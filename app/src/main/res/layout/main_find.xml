@@ -4,19 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <include android:id="@+id/mpf_search_bar"
+        layout="@layout/mpf_sb_layout"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/mainFindTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:maxLines="1"
-            android:textSize="18sp"/>
-
-    </LinearLayout>
+        android:layout_width="match_parent"/>
 
 </LinearLayout>

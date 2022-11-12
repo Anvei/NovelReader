@@ -1,14 +1,9 @@
 package org.anvei.novelreader.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ImageSpan
 import android.view.View
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -16,21 +11,18 @@ import org.anvei.novelreader.R
 import org.anvei.novelreader.adapter.BookShelfAdapter
 import org.anvei.novelreader.adapter.MainPagerAdapter
 import org.anvei.novelreader.beans.WebsiteNovelInfo
+import org.anvei.novelreader.databinding.ActivityMainBinding
 import org.anvei.novelreader.interfaces.view.IBookShelfView
 
 class MainActivity : BaseActivity(), IBookShelfView {
 
-    private lateinit var viewPager: ViewPager           // 主页的ViewPager
-    private lateinit var mainBookShelf: View
-    private lateinit var mainSuggest: View
-    private lateinit var mainSetting: View
+    private lateinit var viewBinding: ActivityMainBinding
 
-    private lateinit var radioGroup: RadioGroup         // 主页下的RadioGroup
-    private lateinit var bookShelfTab: RadioButton
-    private lateinit var suggestTab: RadioButton
-    private lateinit var settingTab: RadioButton
+    private lateinit var bookShelfView: View
+    private lateinit var findView: View
+    private lateinit var settingView: View
 
-    private lateinit var suggestSearch: TextView        // 发现界面顶部的搜索栏
+    private lateinit var mpfSearchBar: View        // 发现界面顶部的搜索栏
 
     // 书架相关变量
     private lateinit var bookShelfItemRecyclerView: RecyclerView
@@ -39,7 +31,8 @@ class MainActivity : BaseActivity(), IBookShelfView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        viewBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
         initComponent()
     }
 
@@ -73,83 +66,72 @@ class MainActivity : BaseActivity(), IBookShelfView {
     /**
      * 初始化控件
      */
+    @SuppressLint("InflateParams")
     private fun initComponent() {
         // 初始化主页ViewPager
-        viewPager = findViewById(R.id.mainViewPager)
-        mainBookShelf = layoutInflater.inflate(R.layout.main_book_shelf, null)
-        mainSuggest = layoutInflater.inflate(R.layout.main_find, null)
-        mainSetting = layoutInflater.inflate(R.layout.main_setting, null)
-        val mainViews: List<View> = listOf(mainBookShelf, mainSuggest, mainSetting)
-        viewPager.adapter = MainPagerAdapter(mainViews)
-
-        // 初始化RadioGroup控件
-        radioGroup = findViewById(R.id.mainRadio)
-        bookShelfTab = findViewById(R.id.mainBookShelf)
-        suggestTab = findViewById(R.id.mainSuggest)
-        settingTab = findViewById(R.id.mainSetting)
-
-        // 为ViewPager设置页面滑动监听
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
+        bookShelfView = layoutInflater.inflate(R.layout.main_book_shelf, null)
+        findView = layoutInflater.inflate(R.layout.main_find, null)
+        settingView = layoutInflater.inflate(R.layout.main_setting, null)
+        val pagerViews: List<View> = listOf(bookShelfView, findView, settingView)
+        viewBinding.mpViewPager.adapter = MainPagerAdapter(pagerViews)
+        viewBinding.mpViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+            // 根据ViewPager的滑动更新RadioGroup的状态
             override fun onPageSelected(position: Int) {
                 when (position) {
                     0 -> {
-                        bookShelfTab.isChecked = true
-                        suggestTab.isChecked = false
-                        settingTab.isChecked = false
+                        viewBinding.mpRadioBookShelf.isChecked = true
+                        viewBinding.mpRadioFind.isChecked = false
+                        viewBinding.mpRadioSetting.isChecked = false
                     }
                     1 -> {
-                        bookShelfTab.isChecked = false
-                        suggestTab.isChecked = true
-                        settingTab.isChecked = false
+                        viewBinding.mpRadioBookShelf.isChecked = false
+                        viewBinding.mpRadioFind.isChecked = true
+                        viewBinding.mpRadioSetting.isChecked = false
                     }
                     2 -> {
-                        bookShelfTab.isChecked = false
-                        suggestTab.isChecked = false
-                        settingTab.isChecked = true
+                        viewBinding.mpRadioBookShelf.isChecked = false
+                        viewBinding.mpRadioFind.isChecked = false
+                        viewBinding.mpRadioSetting.isChecked = true
                     }
                 }
             }
-            override fun onPageScrollStateChanged(state: Int) {
-            }
+            override fun onPageScrollStateChanged(state: Int) {}
         })
         // 给RadioButton按钮设置点击事件监听
-        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+        viewBinding.mpRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.mainBookShelf -> viewPager.currentItem = 0
-                R.id.mainSuggest -> viewPager.currentItem = 1
-                R.id.mainSetting -> viewPager.currentItem = 2
+                R.id.mp_radio_book_shelf -> viewBinding.mpViewPager.currentItem = 0
+                R.id.mp_radio_find -> viewBinding.mpViewPager.currentItem = 1
+                R.id.mp_radio_setting -> viewBinding.mpViewPager.currentItem = 2
             }
         }
+        initBookShelfView()
+        initFindView()
+    }
 
+    private fun initBookShelfView() {
         // 对书架进行初始化
-        bookShelfItemRecyclerView = mainBookShelf.findViewById(R.id.bookShelf)
+        bookShelfItemRecyclerView = bookShelfView.findViewById(R.id.bookShelf)
         bookShelfItemAdapter = BookShelfAdapter(bookShelfItemList, this)
         bookShelfItemRecyclerView.adapter = bookShelfItemAdapter
         bookShelfItemRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
 
+    private fun initFindView() {
         // 发现界面顶部的搜索栏控件初始化
-        suggestSearch = mainSuggest.findViewById(R.id.mainFindTextView)
-        val spannableString = SpannableStringBuilder()
-        spannableString.append("搜索 关键字")
-        val imageSpan = ImageSpan(this, R.drawable.search)
-        //将'搜索'用图片替代
-        spannableString.setSpan(imageSpan, 0, 2, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
-        suggestSearch.text = spannableString
-        suggestSearch.setOnClickListener {
+        mpfSearchBar = findView.findViewById(R.id.mpf_search_bar)
+        mpfSearchBar.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
             startActivity(intent)
         }
     }
 
+    // 从书架上删除指定下标小说
     override fun deleteNovel(index: Int) {
         bookShelfItemList.removeAt(index)
-        bookShelfItemAdapter.notifyItemRemoved(index)   // 同步数据
+        // 同步Recycler内部和外部数据
+        bookShelfItemAdapter.notifyItemRemoved(index)
         bookShelfItemAdapter.notifyItemRangeChanged(index, bookShelfItemList.size - index)
     }
 }
