@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -13,8 +14,9 @@ import org.anvei.novelreader.adapter.MainPagerAdapter
 import org.anvei.novelreader.beans.WebsiteNovelInfo
 import org.anvei.novelreader.databinding.ActivityMainBinding
 import org.anvei.novelreader.interfaces.view.IBookShelfView
+import org.anvei.novelreader.ui.view.SearchBar
 
-class MainActivity : BaseActivity(), IBookShelfView {
+open class MainActivity : BaseActivity(), IBookShelfView {
 
     private lateinit var viewBinding: ActivityMainBinding
 
@@ -22,7 +24,11 @@ class MainActivity : BaseActivity(), IBookShelfView {
     private lateinit var findView: View
     private lateinit var settingView: View
 
-    private lateinit var mpfSearchBar: View        // 发现界面顶部的搜索栏
+    private lateinit var mpfSearchBar: SearchBar        // 发现界面顶部的搜索栏
+
+    private lateinit var mpbSearchBtn: ImageButton
+    private lateinit var mpbSetting: ImageButton
+    private lateinit var mpbEmptyView: View
 
     // 书架相关变量
     private lateinit var bookShelfItemRecyclerView: RecyclerView
@@ -59,6 +65,7 @@ class MainActivity : BaseActivity(), IBookShelfView {
             }
             runOnUiThread {
                 bookShelfItemAdapter.notifyItemRangeChanged(0, bookShelfItemList.size)
+                notifyBookShelfChanged()
             }
         }.start()
     }
@@ -111,6 +118,13 @@ class MainActivity : BaseActivity(), IBookShelfView {
     }
 
     private fun initBookShelfView() {
+        mpbEmptyView = bookShelfView.findViewById(R.id.mpb_empty_view)
+        mpbSetting = bookShelfView.findViewById(R.id.mpb_setting)
+        mpbSearchBtn = bookShelfView.findViewById(R.id.mpb_search)
+        mpbSearchBtn.setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
+        }
         // 对书架进行初始化
         bookShelfItemRecyclerView = bookShelfView.findViewById(R.id.bookShelf)
         bookShelfItemAdapter = BookShelfAdapter(bookShelfItemList, this)
@@ -133,5 +147,14 @@ class MainActivity : BaseActivity(), IBookShelfView {
         // 同步Recycler内部和外部数据
         bookShelfItemAdapter.notifyItemRemoved(index)
         bookShelfItemAdapter.notifyItemRangeChanged(index, bookShelfItemList.size - index)
+        notifyBookShelfChanged()
+    }
+
+    private fun notifyBookShelfChanged() {
+        if (bookShelfItemList.size == 0) {
+            mpbEmptyView.visibility = View.VISIBLE
+        } else {
+            mpbEmptyView.visibility = View.GONE
+        }
     }
 }

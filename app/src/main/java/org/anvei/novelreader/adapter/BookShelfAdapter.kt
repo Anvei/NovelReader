@@ -55,12 +55,12 @@ class BookShelfAdapter(val list: MutableList<WebsiteNovelInfo>, val activity: Ma
         holder.setting.setOnClickListener {
             Thread {
                 activity.appDatabase.websiteNovelDao.apply {
-                    queryNovel(novelInfo.identifier.name, novelInfo.author, novelInfo.novelName)?.let { it1 ->
-                        deleteNovel(it1)
-                    }
+                    queryNovel(novelInfo.identifier.name, novelInfo.author, novelInfo.novelName)
+                        ?.let { it1 -> deleteNovel(it1) }
                 }
                 activity.runOnUiThread {
                     activity.deleteNovel(position)
+                    activity.toast("删除成功")
                 }
             }.start()
         }

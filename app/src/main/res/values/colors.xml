@@ -11,12 +11,15 @@
     <color name="mp_bottom_checked">#FF5151</color>
     <color name="mp_bottom_unchecked">#555555</color>
 
+    <color name="rp_chapter_list_item_unchecked">#5A5A5A</color>
+    <color name="rp_chapter_list_item_checked">#FF4E4E</color>
+
     <color name="main_icon_fill">#FFFFFF</color>
     <color name="main_icon_stroke">#000000</color>
 
-    <color name="light_grey_white">#F0F1F3</color>
+    <color name="light_grey_white">#FBFBFB</color>
 
-    <color name="text_color">#000000</color>
+    <color name="text_color">#2E2E2E</color>
     <color name="text_color_2">#575757</color>
     <color name="chapter_list_item_clicked_text_color">#FF4E4E</color>
 
@@ -32,7 +35,7 @@
     <color name="chapter_page_floating_view">#FFFFFF</color>
 
     <!--章节阅读界面的背景色-->
-    <color name="chapter_content_background">#FFFFFF</color>
+    <color name="rp_content_background">#FFFFFF</color>
     
     <color name="translucent">#00000000</color>
 </resources>

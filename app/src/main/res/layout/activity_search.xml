@@ -25,7 +25,11 @@
             android:background="@color/translucent"
             android:contentDescription="搜索界面的返回上一界面按钮" />
 
-        <include layout="@layout/sp_sb_layout"/>
+        <org.anvei.novelreader.ui.view.SearchBar
+            android:id="@+id/sp_search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:editable="true"/>
 
     </LinearLayout>
 

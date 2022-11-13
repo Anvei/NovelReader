@@ -9,7 +9,6 @@ import org.anvei.novelreader.beans.WebsiteNovelInfo
 import org.anvei.novelreader.databinding.ActivityNovelListBinding
 import org.anvei.novelreader.novel.NovelParserFactory
 import org.anvei.novelreader.novel.WebsiteNovelParser
-import org.anvei.novelreader.ui.view.SearchBar
 
 class NovelListActivity : BaseActivity() {
 
@@ -26,7 +25,7 @@ class NovelListActivity : BaseActivity() {
         setContentView(viewBinding.root)
         novelParsers = NovelParserFactory.websiteNovelParsers
         initComponent()
-        loadNovelInfoList(intent.getStringExtra(EXTRA_SEARCH_KEYWORD))
+        loadNovelInfoList(intent.getCharSequenceExtra(EXTRA_SEARCH_KEYWORD))
     }
 
     private fun initComponent() {
@@ -34,29 +33,26 @@ class NovelListActivity : BaseActivity() {
         searchItemAdapter = SearchItemAdapter(novelInfoList, this)
         viewBinding.srpRecycler.adapter = searchItemAdapter
         viewBinding.srpRecycler.layoutManager = LinearLayoutManager(this)
-            
-        viewBinding.srpSearchBar.setCallBack(object : SearchBar.CallBack() {
-            override fun onClickWithEditable(inputText: String?) {
-                super.onClickWithEditable(inputText)
-                loadNovelInfoList(inputText)
-            }
 
-            override fun onClickWithUnEditable() {
-                super.onClickWithUnEditable()
-                Toast.makeText(baseContext, "点击", Toast.LENGTH_SHORT).show()
-            }
-        })
+        viewBinding.srpSearchBar.setText(intent.getCharSequenceExtra(EXTRA_SEARCH_KEYWORD))
+        viewBinding.srpSearchBar.setBtnOnClickListener {
+            loadNovelInfoList(it)
+        }
     }
 
-    private fun loadNovelInfoList(keyWord: String?) {
-        if (TextUtils.isEmpty(keyWord)) {
+    private fun loadNovelInfoList(keyWord: CharSequence?) {
+        if (TextUtils.isEmpty(keyWord) || keyWord.toString().trim() == "") {
             Toast.makeText(baseContext, "不能为空", Toast.LENGTH_SHORT).show()
             return
         }
         Thread {
-            novelInfoList.clear()
+            val tempSize = novelInfoList.size
+            novelInfoList.clear()               // 清空数据之后需要Adapter同步数据
+            runOnUiThread {
+                searchItemAdapter.notifyItemRangeRemoved(0, tempSize)
+            }
             novelParsers.forEach {
-                val tempList = it.search(keyWord)
+                val tempList = it.search(keyWord.toString())
                 val start = novelInfoList.size
                 novelInfoList.addAll(tempList)
                 runOnUiThread {

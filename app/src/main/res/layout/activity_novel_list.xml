@@ -10,7 +10,7 @@
         android:id="@+id/srp_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:editable="false"/>
+        app:editable="true"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/srp_recycler"

@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import com.bumptech.glide.Glide
-import org.anvei.novelreader.R
 import org.anvei.novelreader.beans.WebsiteNovel
 import org.anvei.novelreader.beans.WebsiteNovelInfo
 import org.anvei.novelreader.databinding.ActivityNovelHomeBinding
@@ -56,11 +54,11 @@ class NovelHomeActivity : BaseActivity() {
                     novelInfo.author, novelInfo.novelName) == null) {
                     appDatabase.websiteNovelDao.addNovel(WebsiteNovel(novelInfo))
                     runOnUiThread {
-                        Toast.makeText(this, "收藏成功!", Toast.LENGTH_SHORT).show()
+                        toast("加入书架成功!")
                     }
                 } else {
                     runOnUiThread {
-                        Toast.makeText(this, "已经在书架中!", Toast.LENGTH_SHORT).show()
+                        toast("已经在书架中!")
                     }
                 }
             }.start()

@@ -34,6 +34,8 @@
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_mp_setting.xml" value="0.14" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_mp_setting_checked.xml" value="0.14" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_mp_setting_radio.xml" value="0.14" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_mpb_search.xml" value="0.134" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_mpb_setting.xml" value="0.134" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_read_page_novel_home.xml" value="0.1195" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_read_page_translation.xml" value="0.1195" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/ic_sp_delete_history.xml" value="0.1515" />
@@ -41,19 +43,19 @@
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/main_book_shelf_icon.xml" value="0.2065" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/search.xml" value="0.1875" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/drawable/search_bar.xml" value="0.115" />
-        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/activity_main2.xml" value="0.1" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/activity_novel_home.xml" value="0.3333333333333333" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/activity_novel_list.xml" value="0.1" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/activity_read.xml" value="0.16666666666666666" />
-        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/activity_read_page.xml" value="0.16666666666666666" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/activity_read_page.xml" value="0.1" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/activity_search.xml" value="0.22" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/book_shelf_item.xml" value="0.22" />
-        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/chapter_content_item.xml" value="0.2" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/chapter_content_item.xml" value="0.1" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/chapter_list_item.xml" value="0.1" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/drawer_head.xml" value="0.19895833333333332" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/main_book_shelf.xml" value="0.1" />
-        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/main_find.xml" value="0.1" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/main_find.xml" value="0.22" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/main_setting.xml" value="0.2" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/main_suggest.xml" value="0.1" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/mpf_sb_layout.xml" value="0.1" />
@@ -63,6 +65,8 @@
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/search_result_item.xml" value="0.1" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/sp_sb_layout.xml" value="0.1" />
         <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/view_search_bar.xml" value="0.1" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/view_search_bar_edit_text.xml" value="0.4466666666666667" />
+        <entry key="..\:/Programming/Android Studio/NovelReader/app/src/main/res/layout/view_search_bar_text_view.xml" value="0.3333333333333333" />
         <entry key="..\:/Programming/Android Studio/NovelReader/hwtxtreaderlib/src/main/res/layout/adapter_chapterlist.xml" value="0.2" />
         <entry key="..\:/Programming/Android Studio/NovelReader/hwtxtreaderlib/src/main/res/layout/view_menu_bottom.xml" value="0.2" />
       </map>

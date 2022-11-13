@@ -1,15 +1,17 @@
 package org.anvei.novelreader.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.anvei.novelreader.AppConfig
 import org.anvei.novelreader.adapter.ChapterContentAdapter
 import org.anvei.novelreader.adapter.ChapterListAdapter
 import org.anvei.novelreader.beans.WebsiteChapterInfo
@@ -19,6 +21,8 @@ import org.anvei.novelreader.interfaces.view.IReadPageView
 import org.anvei.novelreader.novel.NovelParserFactory
 import org.anvei.novelreader.novel.WebsiteNovelParser
 import org.anvei.novelreader.viewmodel.ReadPageActivityModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ReadPageActivity : BaseActivity(), IReadPageView {
 
@@ -33,6 +37,7 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
 
     private lateinit var viewBinding: ActivityReadPageBinding
     private lateinit var viewModel: ReadPageActivityModel
+
     // 小说基本信息
     private lateinit var novelParser: WebsiteNovelParser
     private lateinit var novelInfo: WebsiteNovelInfo
@@ -63,7 +68,8 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
         viewBinding.chapterListRecycler.adapter = chapterListAdapter
         viewBinding.chapterListRecycler.layoutManager = LinearLayoutManager(this)
 
-        viewBinding.chapterContentRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        viewBinding.chapterContentRecycler.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 val manager = recyclerView.layoutManager as LinearLayoutManager
@@ -73,23 +79,72 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
                     currentChapterIndex = index
                     chapterListAdapter.notifyItemChanged(index)
                     chapterListAdapter.notifyItemChanged(temp)
+                    onCurrentChapterName()
                 }
             }
         })
 
         viewBinding.readPageNovelTitle.text = novelInfo.novelName
+        initSettingView()
+        initTopAndBottomView()
+    }
+
+    /**
+     * 初始化设置视图
+     */
+    private fun initSettingView() {
         viewBinding.lastChapter.setOnClickListener {
             onLastChapter()
         }
         viewBinding.nextChapter.setOnClickListener {
             onNextChapter()
         }
+        viewBinding.rpSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                onSeekBarProgressChange(progress)
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
+            override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
+        })
         viewBinding.chapterListDisplayBtn.setOnClickListener {
             onChapterListView(true)
         }
         viewBinding.chapterPageNovelHomeBtn.setOnClickListener {
             onNovelHome()
         }
+        viewBinding.chapterFontSettingBtn.setOnClickListener {
+            onSettingView()         // 关闭设置面板的主视图
+            viewBinding.rpSettingFontLinear.visibility = View.VISIBLE
+        }
+        viewBinding.rpFontSizeAdd.setOnClickListener {
+            if (chapterContentAdapter.getContentSize() < 24) {
+                chapterContentAdapter.apply {
+                    setContentSize(getContentSize() + 2)
+                }
+                AppConfig.setNovelContentFontSize(chapterContentAdapter.getContentSize())
+                toast("当前字体大小: ${chapterContentAdapter.getContentSize().toInt()}sp")
+            } else {
+                toast("已经是最大值")
+            }
+        }
+        viewBinding.rpFontSizeSubtract.setOnClickListener {
+            if (chapterContentAdapter.getContentSize() > 10) {
+                chapterContentAdapter.apply {
+                    setContentSize(getContentSize() - 2)
+                }
+                AppConfig.setNovelContentFontSize(chapterContentAdapter.getContentSize())
+                toast("当前字体大小: ${chapterContentAdapter.getContentSize().toInt()}sp")
+            } else {
+                toast("已经是最小值")
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun initTopAndBottomView() {
+        onCurrentChapterName()
+        viewBinding.rpBottomViewTime.text = Date().hours.toString() + ":" + Date().minutes.toString()
+        viewBinding.rpBottomViewNovelName.text = novelInfo.novelName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,17 +153,19 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
         setContentView(viewBinding.root)
         viewModel = ViewModelProvider(this).get(ReadPageActivityModel::class.java)
 
-
         viewModel.liveData.observe(this) {
         }
         initNovelConfig()
         initComponent()
+        onProgressBar(true)
         Thread {
             // 加载小说章节信息列表
             chapterInfoList.addAll(novelParser.loadNovel(novelInfo.novelUrl))
             runOnUiThread {
+                onProgressBar(false)
+                onCurrentChapterName()
                 if (chapterInfoList.size == 0) {
-                    Toast.makeText(this, "该小说为空", Toast.LENGTH_SHORT).show()
+                    toast("该小说为空")
                     finish()
                 }
                 chapterListAdapter.notifyItemRangeChanged(0, chapterInfoList.size)
@@ -120,7 +177,7 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
     // 更新最后阅读时间
     override fun onStop() {
         super.onStop()
-        updateLastReadTime()
+        updateReadInfo()
     }
 
     override fun onNextChapter() {
@@ -142,8 +199,14 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
     }
 
     override fun onSettingView() {
+        // 主设置视图可见时，字体设置视图必不可见
+        // 主设置视图不可见时，如果字体设置视图可见就关闭，否则就打开主设置视图
         if (viewBinding.chapterSetting.visibility == View.GONE) {
-            viewBinding.chapterSetting.visibility = View.VISIBLE
+            if (viewBinding.rpSettingFontLinear.visibility == View.VISIBLE) {
+                viewBinding.rpSettingFontLinear.visibility = View.GONE
+            } else {
+                viewBinding.chapterSetting.visibility = View.VISIBLE
+            }
         } else {
             viewBinding.chapterSetting.visibility = View.GONE
         }
@@ -162,7 +225,18 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
 
     override fun onCurrentChapter(index: Int) {
         viewBinding.chapterContentRecycler.scrollToPosition(index)
-        viewBinding.chapterContentRecycler.smoothScrollToPosition(index)
+        // viewBinding.chapterContentRecycler.smoothScrollToPosition(index)
+        setSeekBarProgress(index * 100 / chapterInfoList.size)
+    }
+
+    fun setCurrentIndex(index: Int) {
+        currentChapterIndex = index
+    }
+
+    fun onCurrentChapterName() {
+        if (currentChapterIndex < chapterInfoList.size) {
+            viewBinding.rpHeaderChapterName.text = chapterInfoList[currentChapterIndex].chapterName
+        }
     }
 
     override fun getCurrentIndex(): Int {
@@ -177,7 +251,24 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
         }
     }
 
-    override fun updateLastReadTime() {
-        // TODO("Not yet implemented")
+    // 退出时更新相关阅读信息
+    override fun updateReadInfo() {
+        Thread {
+            val queryNovel = appDatabase.websiteNovelDao
+                .queryNovel(novelInfo.identifier.name, novelInfo.author, novelInfo.novelName)
+            queryNovel!!.lastReadChapter = currentChapterIndex
+            queryNovel.lastReadTime = java.sql.Date(Date().time)
+            appDatabase.websiteNovelDao.updateNovel(queryNovel)
+        }.start()
     }
+
+    fun onSeekBarProgressChange(progress: Int) {
+        val targetIndex = chapterInfoList.size * progress / 100
+        onCurrentChapter(targetIndex)
+    }
+
+    override fun setSeekBarProgress(progress: Int) {
+        viewBinding.rpSeekbar.progress = progress
+    }
+
 }

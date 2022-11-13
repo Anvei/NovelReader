@@ -1,7 +1,5 @@
 package org.anvei.novelreader.adapter
 
-import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,10 +26,20 @@ class ChapterListAdapter(private val list: List<WebsiteChapterInfo>, private val
         val chapterInfo = list[position]
         holder.textView.text = chapterInfo.chapterName
         if (position == activity.getCurrentIndex()) {
-            holder.textView.setTextColor(Color.RED)
+            holder.textView.setTextColor(activity.resources
+                .getColor(R.color.rp_chapter_list_item_checked, null))
+        } else {
+            // 处理视图重用造成的多个章节名显示为红色问题
+            holder.textView.setTextColor(activity.resources
+                .getColor(R.color.rp_chapter_list_item_unchecked, null))
         }
         holder.textView.setOnClickListener {
+            val lastIndex = activity.getCurrentIndex()
             activity.onCurrentChapter(position)
+            activity.setCurrentIndex(position)
+            notifyItemChanged(lastIndex)
+            notifyItemChanged(position)
+            activity.onCurrentChapterName()
         }
     }
 

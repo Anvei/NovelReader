@@ -1,6 +1,23 @@
 package org.anvei.novelreader;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.Context;
 
 public class App extends Application {
+
+    @SuppressLint("StaticFieldLeak")
+    private static Context context;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        context = getApplicationContext();
+    }
+
+    // 一个全局的Context对象，其声明周期与整个应用相同
+    public static Context getContext() {
+        return context;
+    }
+
 }

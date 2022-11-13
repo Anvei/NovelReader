@@ -2,11 +2,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="书架"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+        <ImageButton
+            android:id="@+id/mpb_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/mpb_setting"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/ic_mpb_search"
+            android:contentDescription="搜索按钮"
+            android:background="@color/translucent"/>
+        <ImageButton
+            android:id="@+id/mpb_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_mpb_setting"
+            android:contentDescription="设置按钮"
+            android:background="@color/translucent"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/mpb_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:gravity="center"
+        android:text="书架为空"
+        android:textSize="18sp"
+        tools:visibility="visible"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bookShelf"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        tools:visibility="invisible"/>
 
 </LinearLayout>

@@ -1,28 +1,25 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="10dp"
-    android:paddingVertical="5dp">
+    android:paddingVertical="5dp"
+    android:contentDescription="Book shelf item">
 
     <ImageView
         android:id="@+id/bsi_cover"
-        android:layout_width="80dp"
-        android:layout_height="110dp"
-        android:contentDescription="书架上的小说的封面"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_width="60dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:contentDescription="书架上的小说的封面" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/bsi_cover"
         android:orientation="vertical"
-        android:paddingVertical="8dp"
-        app:layout_constraintEnd_toStartOf="@id/bsi_icon_linear"
-        app:layout_constraintStart_toEndOf="@+id/bsi_cover"
-        tools:layout_editor_absoluteY="5dp">
+        android:paddingVertical="5dp">
 
         <TextView
             android:id="@+id/bsi_name"
@@ -31,7 +28,7 @@
             android:layout_marginVertical="5dp"
             android:maxLines="1"
             android:textColor="@color/text_color"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/bsi_last_read_time"
@@ -40,7 +37,7 @@
             android:layout_marginTop="5dp"
             android:maxLines="1"
             android:textColor="@color/text_color_2"
-            android:textSize="12sp" />
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/bsi_last_chapter"
@@ -49,7 +46,7 @@
             android:layout_marginVertical="5dp"
             android:maxLines="1"
             android:textColor="@color/text_color_2"
-            android:textSize="12sp" />
+            android:textSize="11sp" />
 
     </LinearLayout>
 
@@ -57,8 +54,9 @@
         android:id="@+id/bsi_icon_linear"
         android:layout_width="40dp"
         android:layout_height="match_parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:orientation="vertical">
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical"
+        android:paddingVertical="5dp">
 
         <ImageButton
             android:id="@+id/bsi_setting"
@@ -73,4 +71,4 @@
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -47,5 +47,7 @@ interface IReadPageView {
     /**
      * 更新最后阅读时间
      */
-    fun updateLastReadTime()
+    fun updateReadInfo()
+
+    fun setSeekBarProgress(progress: Int)
 }
