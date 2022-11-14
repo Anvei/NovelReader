@@ -7,9 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.R
 import org.anvei.novelreader.activity.ReadPageActivity
-import org.anvei.novelreader.beans.WebsiteChapterInfo
+import org.anvei.novelreader.beans.WebsiteChapter
 
-class ChapterListAdapter(private val list: List<WebsiteChapterInfo>, private val activity: ReadPageActivity) :
+class ChapterListAdapter(private val list: List<WebsiteChapter>, private val activity: ReadPageActivity) :
     RecyclerView.Adapter<ChapterListAdapter.Holder>() {
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {

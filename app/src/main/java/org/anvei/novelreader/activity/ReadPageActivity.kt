@@ -14,12 +14,13 @@ import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.AppConfig
 import org.anvei.novelreader.adapter.ChapterContentAdapter
 import org.anvei.novelreader.adapter.ChapterListAdapter
-import org.anvei.novelreader.beans.WebsiteChapterInfo
-import org.anvei.novelreader.beans.WebsiteNovelInfo
+import org.anvei.novelreader.beans.WebsiteChapter
+import org.anvei.novelreader.beans.WebsiteNovel
 import org.anvei.novelreader.databinding.ActivityReadPageBinding
-import org.anvei.novelreader.interfaces.view.IReadPageView
-import org.anvei.novelreader.novel.NovelParserFactory
-import org.anvei.novelreader.novel.WebsiteNovelParser
+import org.anvei.novelreader.interfaces.IReadPageView
+import org.anvei.novelreader.novel.website.NovelParserFactory
+import org.anvei.novelreader.novel.website.WebsiteNovelParser
+import org.anvei.novelreader.room.repository.NovelRepository
 import org.anvei.novelreader.viewmodel.ReadPageActivityModel
 import java.util.*
 import kotlin.collections.ArrayList
@@ -28,7 +29,7 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
 
     companion object {
         /* 用来启动ReadPageActivity */
-        fun startActivity(context: Context, novelInfo: WebsiteNovelInfo) {
+        fun startActivity(context: Context, novelInfo: WebsiteNovel) {
             val intent = Intent(context, ReadPageActivity::class.java)
             intent.putExtra(EXTRA_NOVEL_INFO, novelInfo)
             context.startActivity(intent)
@@ -40,9 +41,9 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
 
     // 小说基本信息
     private lateinit var novelParser: WebsiteNovelParser
-    private lateinit var novelInfo: WebsiteNovelInfo
+    private lateinit var currentNovel: WebsiteNovel
 
-    private val chapterInfoList = ArrayList<WebsiteChapterInfo>()
+    private val chapterInfoList = ArrayList<WebsiteChapter>()
 
     private lateinit var chapterListAdapter: ChapterListAdapter
     private lateinit var chapterContentAdapter: ChapterContentAdapter
@@ -53,9 +54,9 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
      * 初始化小说基本信息、小说解析器
      */
     private fun initNovelConfig() {
-        novelInfo = intent.getSerializableExtra(EXTRA_NOVEL_INFO) as WebsiteNovelInfo
+        currentNovel = intent.getSerializableExtra(EXTRA_NOVEL_INFO) as WebsiteNovel
         // 根据小说网站标识符初始化相应的网络小说解析器
-        novelParser = NovelParserFactory.getParser(novelInfo.identifier)
+        novelParser = NovelParserFactory.getParser(currentNovel.website)
     }
 
     private fun initComponent() {
@@ -84,9 +85,9 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
             }
         })
 
-        viewBinding.readPageNovelTitle.text = novelInfo.novelName
+        viewBinding.readPageNovelTitle.text = currentNovel.novelName
         initSettingView()
-        initTopAndBottomView()
+        initHeaderAndFooterView()
     }
 
     /**
@@ -140,11 +141,14 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
         }
     }
 
+    /**
+     * 初始化页眉、页脚视图，包括当前章节名称显示、当前时间、当前小说名
+     */
     @SuppressLint("SetTextI18n")
-    private fun initTopAndBottomView() {
+    private fun initHeaderAndFooterView() {
         onCurrentChapterName()
-        viewBinding.rpBottomViewTime.text = Date().hours.toString() + ":" + Date().minutes.toString()
-        viewBinding.rpBottomViewNovelName.text = novelInfo.novelName
+        viewBinding.rpBottomViewTime.format24Hour = "hh:mm"
+        viewBinding.rpBottomViewNovelName.text = currentNovel.novelName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -160,7 +164,7 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
         onProgressBar(true)
         Thread {
             // 加载小说章节信息列表
-            chapterInfoList.addAll(novelParser.loadNovel(novelInfo.novelUrl))
+            chapterInfoList.addAll(novelParser.loadNovel(currentNovel.novelUrl))
             runOnUiThread {
                 onProgressBar(false)
                 onCurrentChapterName()
@@ -213,7 +217,7 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
     }
 
     override fun onNovelHome() {
-        NovelHomeActivity.startActivity(this, novelInfo)
+        NovelHomeActivity.startActivity(this, currentNovel)
     }
 
     override fun onChapterListView(flag: Boolean) {
@@ -254,11 +258,13 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
     // 退出时更新相关阅读信息
     override fun updateReadInfo() {
         Thread {
-            val queryNovel = appDatabase.websiteNovelDao
-                .queryNovel(novelInfo.identifier.name, novelInfo.author, novelInfo.novelName)
-            queryNovel!!.lastReadChapter = currentChapterIndex
-            queryNovel.lastReadTime = java.sql.Date(Date().time)
-            appDatabase.websiteNovelDao.updateNovel(queryNovel)
+            NovelRepository.updateBookShelfNovel(
+                currentNovel.apply {
+                    lastReadChapterIndex = currentChapterIndex
+                    lastReadTime = java.sql.Date(Date().time)
+                    lastChapterName = chapterInfoList.last().chapterName
+                }
+            )
         }.start()
     }
 

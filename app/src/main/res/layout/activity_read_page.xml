@@ -53,14 +53,14 @@
             android:paddingHorizontal="18dp"
             android:paddingVertical="2dp"
             android:layout_marginBottom="3dp">
-            <TextView
+            <TextClock
                 android:id="@+id/rp_bottom_view_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:textSize="11sp"
-                android:text="21:16"
-                tools:ignore="RtlSymmetry" />
+                tools:ignore="RtlSymmetry"
+                tools:text="12:30"/>
             <TextView
                 android:id="@+id/rp_bottom_view_novel_name"
                 android:layout_width="wrap_content"

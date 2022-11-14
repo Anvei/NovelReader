@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.anvei.novelreader.R
 import org.anvei.novelreader.activity.NovelHomeActivity
-import org.anvei.novelreader.beans.WebsiteNovelInfo
+import org.anvei.novelreader.beans.WebsiteNovel
 
-class SearchItemAdapter(private val list: List<WebsiteNovelInfo>, private val context: Context)
+class SearchItemAdapter(private val list: List<WebsiteNovel>, private val context: Context)
     : RecyclerView.Adapter<SearchItemAdapter.Holder>() {
 
     private val itemPosition = R.id.searchItemCover
@@ -36,7 +36,7 @@ class SearchItemAdapter(private val list: List<WebsiteNovelInfo>, private val co
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val novelInfo = list[position]
         holder.novel.text = novelInfo.novelName
-        holder.author.text = "${novelInfo.author} - [${novelInfo.identifier.name}]"
+        holder.author.text = "${novelInfo.author} - [${novelInfo.website.name}]"
         holder.intro.text = novelInfo.intro
         if (TextUtils.isEmpty(novelInfo.coverUrl)) {
             // 没有封面就给一个默认封面

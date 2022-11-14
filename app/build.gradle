@@ -53,6 +53,4 @@ dependencies {
     def room_version = "2.4.3"                          // Room持久层框架
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
-
-    implementation project(':hwtxtreaderlib')               // 小说阅读界面UI
 }

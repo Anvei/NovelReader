@@ -11,9 +11,10 @@ import androidx.viewpager.widget.ViewPager
 import org.anvei.novelreader.R
 import org.anvei.novelreader.adapter.BookShelfAdapter
 import org.anvei.novelreader.adapter.MainPagerAdapter
-import org.anvei.novelreader.beans.WebsiteNovelInfo
+import org.anvei.novelreader.beans.WebsiteNovel
 import org.anvei.novelreader.databinding.ActivityMainBinding
-import org.anvei.novelreader.interfaces.view.IBookShelfView
+import org.anvei.novelreader.interfaces.IBookShelfView
+import org.anvei.novelreader.room.repository.NovelRepository
 import org.anvei.novelreader.ui.view.SearchBar
 
 open class MainActivity : BaseActivity(), IBookShelfView {
@@ -33,7 +34,7 @@ open class MainActivity : BaseActivity(), IBookShelfView {
     // 书架相关变量
     private lateinit var bookShelfItemRecyclerView: RecyclerView
     private lateinit var bookShelfItemAdapter: BookShelfAdapter
-    private val bookShelfItemList = ArrayList<WebsiteNovelInfo>()
+    private val bookShelfWebsiteNovelList = ArrayList<WebsiteNovel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +52,7 @@ open class MainActivity : BaseActivity(), IBookShelfView {
     // 一离开前台可见就清空数据
     override fun onStop() {
         super.onStop()
-        bookShelfItemList.clear()
+        bookShelfWebsiteNovelList.clear()
     }
 
     /**
@@ -59,12 +60,9 @@ open class MainActivity : BaseActivity(), IBookShelfView {
      */
     private fun initBookShelfItemList() {
         Thread {
-            val list = appDatabase.websiteNovelDao.queryAllNovel()
-            list.forEach {
-                bookShelfItemList.add(it.websiteNovelInfo!!)
-            }
+            bookShelfWebsiteNovelList.addAll(NovelRepository.getAllBookShelfNovel())
             runOnUiThread {
-                bookShelfItemAdapter.notifyItemRangeChanged(0, bookShelfItemList.size)
+                bookShelfItemAdapter.notifyItemRangeChanged(0, bookShelfWebsiteNovelList.size)
                 notifyBookShelfChanged()
             }
         }.start()
@@ -127,7 +125,7 @@ open class MainActivity : BaseActivity(), IBookShelfView {
         }
         // 对书架进行初始化
         bookShelfItemRecyclerView = bookShelfView.findViewById(R.id.bookShelf)
-        bookShelfItemAdapter = BookShelfAdapter(bookShelfItemList, this)
+        bookShelfItemAdapter = BookShelfAdapter(bookShelfWebsiteNovelList, this)
         bookShelfItemRecyclerView.adapter = bookShelfItemAdapter
         bookShelfItemRecyclerView.layoutManager = LinearLayoutManager(this)
     }
@@ -143,15 +141,15 @@ open class MainActivity : BaseActivity(), IBookShelfView {
 
     // 从书架上删除指定下标小说
     override fun deleteNovel(index: Int) {
-        bookShelfItemList.removeAt(index)
+        bookShelfWebsiteNovelList.removeAt(index)
         // 同步Recycler内部和外部数据
         bookShelfItemAdapter.notifyItemRemoved(index)
-        bookShelfItemAdapter.notifyItemRangeChanged(index, bookShelfItemList.size - index)
+        bookShelfItemAdapter.notifyItemRangeChanged(index, bookShelfWebsiteNovelList.size - index)
         notifyBookShelfChanged()
     }
 
     private fun notifyBookShelfChanged() {
-        if (bookShelfItemList.size == 0) {
+        if (bookShelfWebsiteNovelList.size == 0) {
             mpbEmptyView.visibility = View.VISIBLE
         } else {
             mpbEmptyView.visibility = View.GONE

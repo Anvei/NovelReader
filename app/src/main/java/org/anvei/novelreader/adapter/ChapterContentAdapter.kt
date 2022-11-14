@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import org.anvei.novelreader.AppConfig
 import org.anvei.novelreader.R
 import org.anvei.novelreader.activity.ReadPageActivity
-import org.anvei.novelreader.beans.WebsiteChapterInfo
-import org.anvei.novelreader.novel.WebsiteNovelParser
+import org.anvei.novelreader.beans.WebsiteChapter
+import org.anvei.novelreader.novel.website.WebsiteNovelParser
 
 class ChapterContentAdapter(
-    private val list: List<WebsiteChapterInfo>,
+    private val list: List<WebsiteChapter>,
     private val activity: ReadPageActivity,
-    private val novelParser: WebsiteNovelParser) :
-    RecyclerView.Adapter<ChapterContentAdapter.Holder>() {
+    private val novelParser: WebsiteNovelParser
+) : RecyclerView.Adapter<ChapterContentAdapter.Holder>() {
 
     private val itemPosition = R.id.readContent
 
@@ -58,12 +58,12 @@ class ChapterContentAdapter(
         }
     }
 
-    private fun loadNovel(holder: Holder, position: Int, chapterInfo: WebsiteChapterInfo) {
+    private fun loadNovel(holder: Holder, position: Int, chapter: WebsiteChapter) {
         if (position == activity.getCurrentIndex()) {
             activity.onProgressBar(true)
         }
         Thread {
-            val chapter = novelParser.loadChapter(chapterInfo)
+            novelParser.loadChapter(chapter)
             activity.runOnUiThread {
                 if (position == activity.getCurrentIndex()) {
                     activity.onProgressBar(false)

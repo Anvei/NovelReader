@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -39,6 +38,7 @@ public class SearchBar extends RelativeLayout {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SearchBar);
         editable = typedArray.getBoolean(R.styleable.SearchBar_editable, false);
         typedArray.recycle();
+        // 根据editable选择相应的视图
         if (editable) {
             root = LayoutInflater.from(getContext()).inflate(R.layout.view_search_bar_edit_text, this);
             inputText = root.findViewById(R.id.vsb_edit);

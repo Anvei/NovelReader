@@ -1,6 +1,6 @@
 package org.anvei.novelreader.presenter;
 
-import org.anvei.novelreader.interfaces.view.IReadPageView;
+import org.anvei.novelreader.interfaces.IReadPageView;
 
 public class ReadPagePresenter {
 

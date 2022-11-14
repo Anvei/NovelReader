@@ -5,8 +5,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.anvei.novelreader.AppDatabase;
-
 public class BaseActivity extends AppCompatActivity {
 
     protected static final String EXTRA_NOVEL_INFO = "org.anvei.novel.info";
@@ -20,10 +18,6 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    public AppDatabase getAppDatabase() {
-        return AppDatabase.getInstance(this);
     }
 
     public void toast(String text) {
