@@ -147,8 +147,8 @@ class ReadPageActivity : BaseActivity(), IReadPageView {
     @SuppressLint("SetTextI18n")
     private fun initHeaderAndFooterView() {
         onCurrentChapterName()
-        viewBinding.rpBottomViewTime.format24Hour = "hh:mm"
-        viewBinding.rpBottomViewNovelName.text = currentNovel.novelName
+        viewBinding.ncpFooterTime.format24Hour = "hh:mm"
+        viewBinding.ncpFooterNovel.text = currentNovel.novelName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

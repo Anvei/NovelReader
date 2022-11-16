@@ -24,10 +24,6 @@ class BookShelfAdapter(val list: MutableList<WebsiteNovel>,
                        val activity: MainActivity) :
     RecyclerView.Adapter<BookShelfAdapter.Holder>() {
 
-    // 取12小时为分界点
-    // 如果是12小时内就显示多少小时之前阅读，否则显示多少天
-    private val timeInterval: Long =  12 * 60 * 60 * 1000
-
     class Holder(val view: View) : RecyclerView.ViewHolder(view) {
         val cover: ImageView = view.findViewById(R.id.bsi_cover)
         val novelName: TextView = view.findViewById(R.id.bsi_name)
@@ -57,7 +53,7 @@ class BookShelfAdapter(val list: MutableList<WebsiteNovel>,
         holder.novelName.text = novel.novelName
         if (novel.lastReadTime != null) {
             val interval = Date().time - novel.lastReadTime.time
-            if (interval <  timeInterval) {
+            if (interval <   12 * 60 * 60 * 1000) {
                 val hours = interval / (1000 * 60 * 60)
                 if (hours > 0) {
                     holder.lastReadTime.text = "最后阅读时间: ${hours}小时前"
@@ -65,7 +61,11 @@ class BookShelfAdapter(val list: MutableList<WebsiteNovel>,
                     holder.lastReadTime.text = "最后阅读时间: 一小时内"
                 }
             } else {
-                holder.lastReadTime.text = "最后阅读时间: ${interval / (1000 * 60 * 60 * 24)}天前"
+                if (interval < 1000 * 60 * 60 * 24) {
+                    holder.lastReadTime.text = "最后阅读时间: 今天"
+                } else {
+                    holder.lastReadTime.text = "最后阅读时间: ${interval / (1000 * 60 * 60 * 24)}天前"
+                }
             }
         } else {
             holder.lastReadTime.text = "尚未阅读"

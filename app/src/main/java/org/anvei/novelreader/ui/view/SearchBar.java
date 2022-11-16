@@ -35,9 +35,13 @@ public class SearchBar extends RelativeLayout {
     }
 
     public void init(AttributeSet attrs) {
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SearchBar);
-        editable = typedArray.getBoolean(R.styleable.SearchBar_editable, false);
-        typedArray.recycle();
+        if (attrs == null) {
+            editable = false;
+        } else {
+            TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SearchBar);
+            editable = typedArray.getBoolean(R.styleable.SearchBar_editable, false);
+            typedArray.recycle();
+        }
         // 根据editable选择相应的视图
         if (editable) {
             root = LayoutInflater.from(getContext()).inflate(R.layout.view_search_bar_edit_text, this);

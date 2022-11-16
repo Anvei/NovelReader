@@ -12,7 +12,9 @@
         android:paddingVertical="8dp"
         android:textSize="15sp"
         android:textColor="@color/rp_chapter_list_item_unchecked"
-        android:maxLines="1"/>
+        android:maxLines="1"
+        android:lines="1"
+        android:ellipsize="end"/>
 
     <View
         android:layout_width="match_parent"

@@ -51,7 +51,7 @@ class BiqumuParser : WebsiteNovelParser() {
                     website = websiteIdentifier
                     author = li.select("span.n4").text()
                     novelName = li.select("span.n2 > a").text()
-                    novelUrl = li.select("span.n2 > a").attr("href")
+                    novelUrl = homeUrl + li.select("span.n2 > a").attr("href")
                 }
                 novelInfoList.add(novel)
             }
